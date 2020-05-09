@@ -2,18 +2,20 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QLabel>
-#include <QPushButton>
-#include <QCheckBox>
+#include "qlabel.h"
+#include "qscrollbar.h"
 #include <QToolBar>
-#include <QVBoxLayout>
-#include <QVector>
-#include <QObject>
-#include <QWidget>
-#include <QGraphicsScene>
+#include "qmessagebox.h"
+#include "QVBoxLayout"
+#include "qdebug.h"
+#include "qsize.h"
+#include "QHBoxLayout"
+#include "QGraphicsScene"
 #include <QGraphicsView>
-#include <QVector>
-#include <QString>
+#include <QHBoxLayout>
+#include <QButtonGroup>
+#include <QToolButton>
+#include <QLineEdit>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -37,19 +39,49 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-
-    QToolBar *Vtoolbar;
-    QToolBar *Htoolbar;
-    QPushButton *addHoles;
-    QPushButton *addProcess;
-    QPushButton *addHolesDone;
-    QPushButton *addProDone;
-    QCheckBox *firstFit_checkbox;
-    QCheckBox *bestFit_checkbox;
     MainWindow(QWidget *parent = nullptr);
+
+    QHBoxLayout *Horizontal_layout;
+    QGraphicsScene *sideButtonsScene;
+    QGraphicsView *sideButtonsView;
+    QGraphicsScene *sideOptionsScene;
+    QGraphicsView *sideOptionsView;
+    QGraphicsScene *segmentTableScene;
+    QGraphicsView *segmentTableView;
+    QGraphicsScene *memDrawingScene;
+    QGraphicsView *memDrawingView;
+    QToolBar *buttonsToolbar;
+    QToolButton *addHoles;
+    QToolButton *addHolesNo;
+    QToolButton *processButton;
+    QToolButton *holesDoneB;
+    QToolButton *drawButton;
+    QToolButton *restartButton;
+    QWidget * placeholder;
+    QLabel *memorySizeLabel;
+    QLineEdit *memorySize;
+    QLabel *noHolesLabel;
+    QLineEdit *noHoles;
+    QLineEdit *no_segments;
+    QVector <Holes *> holesQueue;
+    QLabel *hSizeLabel;
+    QLabel *hAddressLabel;
+    QLineEdit *hSize;
+    QLineEdit *hAddress;
+    QToolButton *drawMyHoles;
+    QString holes_num, memSize;
+    QIcon processIcon;
+
     ~MainWindow();
 
 private:
-    Ui::MainWindow *ui;
+    //Ui::MainWindow *ui;
+
+public slots:
+    void lineEdits();
+    void memSizeAndAdd();
+    void drawHoles();
+    void segmentsLayout();
+
 };
 #endif // MAINWINDOW_H

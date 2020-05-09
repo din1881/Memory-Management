@@ -1,100 +1,239 @@
 #include "mainwindow.h"
-//#include "ui_mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
-  //ui(new Ui::MainWindow)
+
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    //, ui(new Ui::MainWindow)
 {
-    /******************* Adding Vertical ToolBar ***********************/
-
-    Vtoolbar = new QToolBar(this);
-    Vtoolbar->setStyleSheet("QToolBar{ background-color:#035aa6;  color:white; }");
-    Vtoolbar->setGeometry(0,0,150,500);
-
-
-    /**************** Adding holes Button inside toolbar **************/
-
-    addHoles = new QPushButton("Add Holes",this);
-    addHoles->setStyleSheet(" QPushButton{ background-color:#1f4068; color:white; font-size: 17px; font-family: Arial;border-radius: 4px;} "
-                      "QPushButton:hover { background-color: white; color:rgb(0,0,0); border-radius:10%;border-width: 0.5px; border-style: solid; border-color: gray ;} ");
-    addHoles->setGeometry(25,150,100,40);
-
-
-    /************ Adding Algorithm CheckBox inside toolbar *************/
-
-    bestFit_checkbox = new QCheckBox("Best Fit", this);
-    bestFit_checkbox->setStyleSheet("background-color:#035aa6; color:rgb(0,0,0); font-size: 15px; font-family: Arial;");
-    bestFit_checkbox->setGeometry(30,210,18,18);
-
-    firstFit_checkbox = new QCheckBox("First Fit", this);
-    firstFit_checkbox->setStyleSheet("background-color:#035aa6; color:rgb(0,0,0); font-size: 15px; font-family: Arial;");
-    firstFit_checkbox->setGeometry(70,210,18,18);
-
-
-    /**************** Adding Hdone Button inside toolbar **************/
-
-    addHolesDone = new QPushButton("Done",this);
-    addHolesDone->setStyleSheet(" QPushButton{ background-color:#1f4068; color:white; font-size: 17px; font-family: Arial;border-radius: 4px;} "
-                      "QPushButton:hover { background-color: white; border-radius:10%;border-width: 0.5px; border-style: solid; border-color: gray ;color:1f4068;} ");
-    addHolesDone->setGeometry(25,250,100,40);
+    //ui->setupUi(this);
 
 
 
-    /******************* Adding Horizontal ToolBar ***********************/
+    Horizontal_layout = new QHBoxLayout();
 
-    Htoolbar = new QToolBar(this);
-    Htoolbar->setStyleSheet("QToolBar{ background-color:#035aa6;  color:white; }");
-    Htoolbar->setGeometry(0,500,1000,75);
+    sideButtonsScene = new QGraphicsScene();
+    sideButtonsView = new QGraphicsView(sideButtonsScene);
+    sideButtonsScene->setBackgroundBrush(QColor(3,90,166));
+    sideButtonsView->setMinimumWidth(30);
+    sideButtonsView->setMaximumWidth(70);
+    sideButtonsView->setMinimumHeight(600);
+    sideButtonsView->setAlignment(Qt::AlignTop);
 
+    /*****************************Adding buttons to sideButtonsView******************************/
 
+    addHoles = new QToolButton();
+    addHoles->setStyleSheet("QToolButton{ background-color : #035aa6; border:none;}");
+    addHoles->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    addHoles->setGeometry(0,15,75,80);
+    addHoles->setIcon(QIcon("C:/Users/Dina/Desktop/hole.png"));
+    addHoles->setIconSize(QSize(50,50));
+    //addHoles->setAutoRaise(false);
+    addHoles->setText("Holes");
+    sideButtonsScene->addWidget(addHoles);
 
-    /**************** Adding addProcess Button inside toolbar **************/
-
-    addProcess = new QPushButton("+",this);
-    addProcess->setStyleSheet(" QPushButton{ background-color:#1f4068; color:white; font-size: 17px; font-family: Arial;border-radius: 4px;} "
-                      "QPushButton:hover { background-color: white;color:rgb(0,0,0); border-radius:10%;border-width: 0.5px; border-style: solid; border-color: gray ;color:1f4068;} ");
-    addProcess->setGeometry(475,515,50,50);
-
-
-
-    /**************** Adding Hdone Button inside toolbar **************/
-
-    addProDone = new QPushButton("✓",this);
-    addProDone->setStyleSheet(" QPushButton{ background-color:#1f4068; color:white; font-size: 17px; font-family: Arial;border-radius: 4px;} "
-                      "QPushButton:hover { background-color: white;color:rgb(0,0,0); border-radius:10%;border-width: 0.5px; border-style: solid; border-color: gray ;color:1f4068;} ");
-    addProDone->setGeometry(550,515,50,50);
+    connect(addHoles,SIGNAL(clicked()),this,SLOT(lineEdits())) ;
 
 
 
 
-    // Initializing the scene , and making it parent to the view (Qt requirments :] )
-    QGraphicsScene *Scene = new QGraphicsScene();
-    QGraphicsView *view = new QGraphicsView();
-    Scene->setBackgroundBrush(Qt::white);
-    view = new  QGraphicsView(Scene);
+    processButton = new QToolButton();
+    processButton->setStyleSheet("QToolButton{ background-color :#035aa6; border:none; }");
+    processButton->setGeometry(0,100,75,75);
+    processButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
-    // Creating a horizontal  layout (column) to add the things in the same column to it
-    QHBoxLayout * Hlayout = new QHBoxLayout();
-    Hlayout->addWidget(Vtoolbar);
-    Hlayout->addWidget(addHoles);
-    Hlayout->addWidget(addHolesDone);
-    Hlayout->addWidget(bestFit_checkbox);
-    Hlayout->addWidget(firstFit_checkbox);
-    Hlayout->addWidget(view);
+    processIcon.addPixmap(QPixmap("C:/Users/Dina/Desktop/planning.png"), QIcon::Normal);
+    //processIcon.addPixmap(QPixmap("C:/Users/Dina/Desktop/process-disabled.png"), QIcon::Disabled);
+    processButton->setIcon(processIcon);
+    processButton->setIconSize(QSize(50,50));
+    processButton->setText("Process");
+    processButton->setEnabled(false);
+    sideButtonsScene->addWidget(processButton);
+    connect(processButton,SIGNAL(clicked()),this,SLOT(segmentsLayout())) ;
 
 
-    // Creating a vertical row that can take widgets in it , we will make a row of column element , and a push button
-    QVBoxLayout *vlayout = new QVBoxLayout();
-    vlayout->addLayout(Hlayout);
-    vlayout->addWidget(Htoolbar);
-    vlayout->addWidget(addProcess);
-    vlayout->addWidget(addProcess);
-    vlayout->addWidget(addProDone);
-    this->setLayout(vlayout);
+
+
+
+
+
+    drawButton = new QToolButton();
+    drawButton->setStyleSheet("QToolButton{ background-color :#035aa6; border:none; }");
+    drawButton->setGeometry(0,190,75,75);
+    drawButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    drawButton->setIcon(QIcon("C:/Users/Dina/Desktop/right.png"));
+    drawButton->setIconSize(QSize(50,50));
+    drawButton->setText("Draw");
+    sideButtonsScene->addWidget(drawButton);
+
+    restartButton = new QToolButton();
+    restartButton->setStyleSheet("QToolButton{ background-color :#035aa6; border:none; }");
+    restartButton->setGeometry(0,275,75,75);
+    restartButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    restartButton->setIcon(QIcon("C:/Users/Dina/Desktop/edit-table.png"));
+    restartButton->setIconSize(QSize(50,50));
+    restartButton->setText("Table");
+    sideButtonsScene->addWidget(restartButton);
+
+    restartButton = new QToolButton();
+    restartButton->setStyleSheet("QToolButton{ background-color :#035aa6; border:none; }");
+    restartButton->setGeometry(0,350,75,75);
+    restartButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    restartButton->setIcon(QIcon("C:/Users/Dina/Desktop/updated2.png"));
+    restartButton->setIconSize(QSize(50,50));
+    restartButton->setText("Restart");
+    sideButtonsScene->addWidget(restartButton);
+
+
+    /***********************************************************************/
+
+    sideOptionsScene = new QGraphicsScene();
+    sideOptionsView = new QGraphicsView(sideOptionsScene);
+    sideOptionsScene->setBackgroundBrush(QColor(3,90,166));
+    sideOptionsView->setMinimumWidth(250);
+    sideOptionsView->setMaximumWidth(250);
+    sideOptionsView->setAlignment(Qt::AlignTop);
+
+
+
+    segmentTableScene = new QGraphicsScene();
+    segmentTableView = new QGraphicsView(segmentTableScene);
+    segmentTableScene->setBackgroundBrush(Qt::white);
+    segmentTableView->setMinimumWidth(150);
+
+
+    memDrawingScene = new QGraphicsScene();
+    memDrawingView = new QGraphicsView(memDrawingScene);
+    memDrawingScene->setBackgroundBrush(Qt::white);
+    memDrawingView->setMinimumWidth(250);
+
+
+    Horizontal_layout->addWidget(sideButtonsView);
+    Horizontal_layout->addWidget(sideOptionsView);
+    Horizontal_layout->addWidget(segmentTableView);
+    Horizontal_layout->addWidget(memDrawingView);
+
+
+    placeholder= new  QWidget();
+    placeholder->setLayout(Horizontal_layout);
+    //placeholder->setStyleSheet("QWidget{background-color : #035aa6;}");
+    this->setCentralWidget(placeholder);
+
 
 }
+
 
 MainWindow::~MainWindow()
 {
-    //delete ui;
+   // delete ui;
 }
 
+void MainWindow::lineEdits()
+{
+    memorySizeLabel= new QLabel ();
+    memorySizeLabel->setText("Memory Size");
+    memorySizeLabel->setStyleSheet("background-color :#035aa6; color:black;font-size: 15px; font-family: Arial;");
+    memorySizeLabel->setGeometry(50,10,90,30);
+    sideOptionsScene->addWidget(memorySizeLabel);
+
+    memorySize= new   QLineEdit();
+    memorySize->setGeometry(30,50,120,30);
+    memorySize->setStyleSheet("background-color:white;");
+    sideOptionsScene->addWidget(memorySize);
+
+
+    noHolesLabel = new QLabel ();
+    noHolesLabel->setText("Number of Holes");
+    noHolesLabel->setStyleSheet("background-color :#035aa6; color:black; font-size: 15px; font-family: Arial;");
+    noHolesLabel->setGeometry(35,100, 110, 30);
+    sideOptionsScene->addWidget(noHolesLabel);
+
+    noHoles = new   QLineEdit();
+    noHoles->setGeometry(30,140,120,30);
+    noHoles->setStyleSheet("background-color:white;");
+    sideOptionsScene->addWidget(noHoles);
+
+
+
+    addHolesNo = new QToolButton();
+    addHolesNo->setStyleSheet("QToolButton{ background-color : #035aa6; border:none;}");
+    //addHolesNo->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    addHolesNo->setGeometry(50,180,75,80);
+    addHolesNo->setIcon(QIcon("C:/Users/Dina/Desktop/add.png"));
+    addHolesNo->setIconSize(QSize(50,50));
+    //addHoles->setAutoRaise(false);
+    //addHolesNo->setText("Holes");
+    sideOptionsScene->addWidget(addHolesNo);
+    connect(addHolesNo,SIGNAL(clicked()),this,SLOT(memSizeAndAdd())) ;
+
+}
+
+void MainWindow::memSizeAndAdd()
+{
+    memSize= memorySize->text();
+    holes_num = noHoles->text();
+    qDebug()<<"hey1: "<<holes_num;
+    hSizeLabel = new QLabel("Hole Size");
+    hAddressLabel = new QLabel("Starting Address");
+
+    hSizeLabel ->setGeometry(5,245,65,30);
+    hAddressLabel->setGeometry(90,245,120,30);
+
+    hSizeLabel ->setStyleSheet("background-color : #035aa6; color:black; font-size: 15px; font-family: Arial;");
+    hAddressLabel->setStyleSheet("background-color : #035aa6; color:black; font-size: 15px; font-family: Arial;");
+
+    sideOptionsScene->addWidget(hSizeLabel);
+    sideOptionsScene->addWidget(hAddressLabel);
+
+
+
+    int height=245;
+    qDebug()<<"hey2: "<<holes_num;
+    for (int i = 0; i<holes_num.split(" ")[0].toInt(); i++)
+    {
+        hSize = new QLineEdit();
+        hAddress = new QLineEdit();
+
+        qDebug()<<hAddress;
+
+        Holes *h = new Holes;
+
+        hSize->setGeometry(0,50+height,80,30);
+        hAddress->setGeometry(100,50+height,80,30);
+
+        h->startingAddress=(hAddress->text()).split(" ")[0].toInt();
+        h->size=(hSize->text()).split(" ")[0].toInt();
+
+        sideOptionsScene->addWidget(hSize);
+        sideOptionsScene->addWidget(hAddress);
+
+        height+=50;
+        holesQueue.append(h);
+    }
+
+    drawMyHoles = new QToolButton();
+    drawMyHoles->setStyleSheet("QToolButton{ background-color : #035aa6; border:none;}");
+    drawMyHoles->setGeometry(50,height+50,75,80);
+    drawMyHoles->setIcon(QIcon("C:/Users/Dina/Desktop/check.png"));
+    drawMyHoles->setIconSize(QSize(50,50));
+    sideOptionsScene->addWidget(drawMyHoles);
+    connect(drawMyHoles,SIGNAL(clicked()),this,SLOT(drawHoles())) ;
+}
+
+void MainWindow::drawHoles()
+{
+
+    processButton->setEnabled(true);
+}
+
+void MainWindow::segmentsLayout()
+{
+    sideOptionsScene->clear();
+    sideOptionsView = new QGraphicsView(sideOptionsScene);
+    sideOptionsScene->setBackgroundBrush(QColor(3,90,166));
+    sideOptionsView->setMinimumWidth(250);
+    sideOptionsView->setMaximumWidth(250);
+    sideOptionsView->setAlignment(Qt::AlignTop);
+
+
+
+}
