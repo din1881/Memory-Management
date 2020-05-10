@@ -45,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent)
     addHoles->setStyleSheet("QToolButton{ background-color : #035aa6; border:none;}");
     addHoles->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     addHoles->setGeometry(0,15,75,80);
-    addHoles->setIcon(QIcon("C:/Users/Dina/Desktop/hole.png"));
+    addHoles->setIcon(QIcon("../icons/hole.png"));
     addHoles->setIconSize(QSize(50,50));
     //addHoles->setAutoRaise(false);
     addHoles->setText("Holes");
@@ -61,8 +61,8 @@ MainWindow::MainWindow(QWidget *parent)
     processButton->setGeometry(0,100,75,75);
     processButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
-    processIcon.addPixmap(QPixmap("C:/Users/Dina/Desktop/planning.png"), QIcon::Normal);
-    //processIcon.addPixmap(QPixmap("C:/Users/Dina/Desktop/process-disabled.png"), QIcon::Disabled);
+    processIcon.addPixmap(QPixmap("../icons/planning.png"), QIcon::Normal);
+    //processIcon.addPixmap(QPixmap("../icons/process-disabled.png"), QIcon::Disabled);
     processButton->setIcon(processIcon);
     processButton->setIconSize(QSize(50,50));
     processButton->setText("Process");
@@ -80,7 +80,7 @@ MainWindow::MainWindow(QWidget *parent)
     drawButton->setStyleSheet("QToolButton{ background-color :#035aa6; border:none; }");
     drawButton->setGeometry(0,190,75,75);
     drawButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    drawButton->setIcon(QIcon("C:/Users/Dina/Desktop/right.png"));
+    drawButton->setIcon(QIcon("../icons/right.png"));
     drawButton->setIconSize(QSize(50,50));
     drawButton->setText("Draw");
     sideButtonsScene->addWidget(drawButton);
@@ -90,7 +90,7 @@ MainWindow::MainWindow(QWidget *parent)
     tableButton->setStyleSheet("QToolButton{ background-color :#035aa6; border:none; }");
     tableButton->setGeometry(0,275,75,75);
     tableButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    tableButton->setIcon(QIcon("C:/Users/Dina/Desktop/edit-table.png"));
+    tableButton->setIcon(QIcon("../icons/edit-table.png"));
     tableButton->setIconSize(QSize(50,50));
     tableButton->setText("Table");
     sideButtonsScene->addWidget(tableButton);
@@ -100,7 +100,7 @@ MainWindow::MainWindow(QWidget *parent)
     restartButton->setStyleSheet("QToolButton{ background-color :#035aa6; border:none; }");
     restartButton->setGeometry(0,350,75,75);
     restartButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    restartButton->setIcon(QIcon("C:/Users/Dina/Desktop/updated2.png"));
+    restartButton->setIcon(QIcon("../icons/updated2.png"));
     restartButton->setIconSize(QSize(50,50));
     restartButton->setText("Restart");
     sideButtonsScene->addWidget(restartButton);
@@ -180,7 +180,7 @@ void MainWindow::lineEdits()
     addHolesNo->setStyleSheet("QToolButton{ background-color : #035aa6; border:none;}");
     //addHolesNo->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     addHolesNo->setGeometry(50,180,75,80);
-    addHolesNo->setIcon(QIcon("C:/Users/Dina/Desktop/add.png"));
+    addHolesNo->setIcon(QIcon("../icons/add.png"));
     addHolesNo->setIconSize(QSize(50,50));
     //addHoles->setAutoRaise(false);
     //addHolesNo->setText("Holes");
@@ -235,7 +235,7 @@ void MainWindow::memSizeAndAdd()
     drawMyHoles = new QToolButton();
     drawMyHoles->setStyleSheet("QToolButton{ background-color : #035aa6; border:none;}");
     drawMyHoles->setGeometry(50,height+50,75,80);
-    drawMyHoles->setIcon(QIcon("C:/Users/Dina/Desktop/check.png"));
+    drawMyHoles->setIcon(QIcon("../icons/check.png"));
     drawMyHoles->setIconSize(QSize(50,50));
     sideOptionsScene->addWidget(drawMyHoles);
     connect(drawMyHoles,SIGNAL(clicked()),this,SLOT(drawHoles())) ;
