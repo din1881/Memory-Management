@@ -20,12 +20,11 @@ void Best_fit(QVector<Segments *> &s, QVector<Segments *> &large_Seg,QVector <Ho
                     s[i]->startingAddress=h[j]->startingAddress;
                     //to fill the large vector of segments of all processes to be drawn
                     large_Seg.push_back(s[i]);
-
                     //decrease the size of the hole
-                    if(h[j]->size != s[i]->size){
                         h[j]->size=h[j]->size-s[i]->size;
+                        h[j]->startingAddress=h[j]->startingAddress+s[i]->size;
                         break;
-                    }
+
 
 
                 }
