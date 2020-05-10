@@ -1,14 +1,34 @@
 #include "mainwindow.h"
-
+#include "alg.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     //, ui(new Ui::MainWindow)
 {
     //ui->setupUi(this);
+    /******************** Creating Testcase ***************************/
+    Segments* Temp_Segment= new Segments;
+    Segments* Temp_Segment1= new Segments;
+    Temp_Segment->size=700;
+    Temp_Segment1->size=400;
+    Temp_Segment1->segmentName="p1";
+    segmQueue.append(Temp_Segment);
+    segmQueue.append(Temp_Segment1);
+    Holes* Temp_Hole = new Holes;
+    Temp_Hole->startingAddress = 0;
+    Temp_Hole->size = 500;
+    holeQueue.append(Temp_Hole);
+    Holes* Temp_Hole1 = new Holes;
+    Temp_Hole1->startingAddress = 2400;
+    Temp_Hole1->size = 1000;
+    holeQueue.append(Temp_Hole1);
+    Holes* Temp_Hole2 = new Holes;
+    Temp_Hole2->startingAddress = 5700;
+    Temp_Hole2->size = 1400;
+    holeQueue.append(Temp_Hole2);
 
 
-
+    /**************GUI Design*******************/
     Horizontal_layout = new QHBoxLayout();
 
     sideButtonsScene = new QGraphicsScene();
@@ -64,15 +84,17 @@ MainWindow::MainWindow(QWidget *parent)
     drawButton->setIconSize(QSize(50,50));
     drawButton->setText("Draw");
     sideButtonsScene->addWidget(drawButton);
+    connect(drawButton,SIGNAL(clicked()),this,SLOT(drawProcess())) ;
 
-    restartButton = new QToolButton();
-    restartButton->setStyleSheet("QToolButton{ background-color :#035aa6; border:none; }");
-    restartButton->setGeometry(0,275,75,75);
-    restartButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    restartButton->setIcon(QIcon("C:/Users/Dina/Desktop/edit-table.png"));
-    restartButton->setIconSize(QSize(50,50));
-    restartButton->setText("Table");
-    sideButtonsScene->addWidget(restartButton);
+    tableButton = new QToolButton();
+    tableButton->setStyleSheet("QToolButton{ background-color :#035aa6; border:none; }");
+    tableButton->setGeometry(0,275,75,75);
+    tableButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    tableButton->setIcon(QIcon("C:/Users/Dina/Desktop/edit-table.png"));
+    tableButton->setIconSize(QSize(50,50));
+    tableButton->setText("Table");
+    sideButtonsScene->addWidget(tableButton);
+    connect(tableButton,SIGNAL(clicked()),this,SLOT(show_seg_table())) ;
 
     restartButton = new QToolButton();
     restartButton->setStyleSheet("QToolButton{ background-color :#035aa6; border:none; }");
@@ -235,5 +257,34 @@ void MainWindow::segmentsLayout()
     sideOptionsView->setAlignment(Qt::AlignTop);
 
 
+
+}
+
+void MainWindow::drawProcess(){
+
+    Best_fit(segmQueue,large_segments,holeQueue);
+
+    for(int i=0; i<large_segments.size();i++){
+        qDebug()<<large_segments[i]->startingAddress<<endl;
+    }
+
+    /*insert memory drawing here*/
+}
+
+void MainWindow::show_seg_table(){
+    get_segment_table(table,large_segments,"p1");
+
+    int height=0;
+    for(int i=0;i<table.size();i++){
+        QLabel *address1 = new QLabel;
+        QLabel *size1 = new QLabel;
+        address1->setText(tr(" %1").arg(table[i]->startingAddress));
+        size1->setText(tr(" %1").arg(table[i]->size));
+        address1->setGeometry(300,100+height,100,100);
+        size1->setGeometry(500,100+height,100,100);
+        this->layout()->addWidget(address1);
+        this->layout()->addWidget(size1);
+        height+=70;
+    }
 
 }

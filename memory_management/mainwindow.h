@@ -57,6 +57,7 @@ public:
     QToolButton *holesDoneB;
     QToolButton *drawButton;
     QToolButton *restartButton;
+    QToolButton *tableButton;
     QWidget * placeholder;
     QLabel *memorySizeLabel;
     QLineEdit *memorySize;
@@ -64,6 +65,11 @@ public:
     QLineEdit *noHoles;
     QLineEdit *no_segments;
     QVector <Holes *> holesQueue;
+    //for testing
+    QVector <Holes *> holeQueue;
+    QVector <Segments *> segmQueue;
+    QVector <Segments *> large_segments;
+    QVector <Segments *> table;
     QLabel *hSizeLabel;
     QLabel *hAddressLabel;
     QLineEdit *hSize;
@@ -71,6 +77,7 @@ public:
     QToolButton *drawMyHoles;
     QString holes_num, memSize;
     QIcon processIcon;
+
 
     ~MainWindow();
 
@@ -82,6 +89,8 @@ public slots:
     void memSizeAndAdd();
     void drawHoles();
     void segmentsLayout();
+    void drawProcess();
+    void show_seg_table();
 
 };
 #endif // MAINWINDOW_H
