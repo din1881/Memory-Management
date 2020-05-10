@@ -18,11 +18,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     alg.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    memory.cpp
 
 HEADERS += \
     alg.h \
-    mainwindow.h
+    mainwindow.h \
+    memory.h
 
 FORMS += \
     mainwindow.ui

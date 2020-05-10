@@ -18,6 +18,8 @@
 #include <QLineEdit>
 #include <QMessageBox>
 #include <QCoreApplication>
+#include <QPushButton>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -43,6 +45,9 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
 
+    QButtonGroup *BGroup;
+    QVector<Segments *> segments;
+    QVector <Holes *> holes;
     QHBoxLayout *Horizontal_layout;
     QGraphicsScene *sideButtonsScene;
     QGraphicsView *sideButtonsView;
