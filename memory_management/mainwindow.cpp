@@ -94,7 +94,7 @@ MainWindow::MainWindow(QWidget *parent)
     tableButton->setIconSize(QSize(50,50));
     tableButton->setText("Table");
     sideButtonsScene->addWidget(tableButton);
-    connect(tableButton,SIGNAL(clicked()),this,SLOT(show_seg_table())) ;
+    connect(tableButton,SIGNAL(clicked()),this,SLOT(get_table_name())) ;
 
     restartButton = new QToolButton();
     restartButton->setStyleSheet("QToolButton{ background-color :#035aa6; border:none; }");
@@ -271,20 +271,67 @@ void MainWindow::drawProcess(){
     /*insert memory drawing here*/
 }
 
+void MainWindow::get_table_name(){
+    sideOptionsScene->clear();
+    sideOptionsView = new QGraphicsView(sideOptionsScene);
+    sideOptionsScene->setBackgroundBrush(QColor(3,90,166));
+    sideOptionsView->setMinimumWidth(250);
+    sideOptionsView->setAlignment(Qt::AlignTop);
+
+    processTableLabel= new QLabel ();
+    processTableLabel->setText("Process Name");
+    processTableLabel->setStyleSheet("background-color :#035aa6; color:black;font-size: 15px; font-family: Arial;");
+    processTableLabel->setGeometry(40,10,100,30);
+    sideOptionsScene->addWidget(processTableLabel);
+
+    processTablename= new QLineEdit();
+    processTablename->setGeometry(30,50,120,30);
+    processTablename->setStyleSheet("background-color:white;");
+    sideOptionsScene->addWidget(processTablename);
+
+    QString path = QCoreApplication::applicationDirPath() + "/../../../Memory-Management/icons/";
+    tableInputButton = new QToolButton();
+    tableInputButton->setStyleSheet("QToolButton{ background-color : #035aa6; border:none;}");
+    tableInputButton->setGeometry(50,80,75,80);
+    tableInputButton->setIcon(QIcon(path +"check.png"));
+    tableInputButton->setIconSize(QSize(50,50));
+    sideOptionsScene->addWidget(tableInputButton);
+    connect(tableInputButton,SIGNAL(clicked()),this,SLOT(show_seg_table())) ;
+}
+
 void MainWindow::show_seg_table(){
-    get_segment_table(table,large_segments,"p1");
+
+    QString get_process_name = processTablename->text();
+    qDebug()<<get_process_name;
+
+    get_segment_table(table,large_segments,get_process_name);
+
+    //check if the user entered invalid process name
+    if(table.size()==0){
+        QMessageBox *invalid_name = new QMessageBox;
+        invalid_name->setText("No process found with this name");
+        invalid_name->exec();
+    }
 
     int height=0;
     for(int i=0;i<table.size();i++){
         QLabel *address1 = new QLabel;
         QLabel *size1 = new QLabel;
+        QLabel *seg_no = new QLabel;
         address1->setText(tr(" %1").arg(table[i]->startingAddress));
         size1->setText(tr(" %1").arg(table[i]->size));
-        address1->setGeometry(300,100+height,100,100);
-        size1->setGeometry(500,100+height,100,100);
-        this->layout()->addWidget(address1);
-        this->layout()->addWidget(size1);
-        height+=70;
+        seg_no->setText(tr("%1").arg(i));
+        seg_no->setStyleSheet("background-color :#035aa6; color:black;");
+        seg_no->setGeometry(5,160+height,20,25);
+        address1->setGeometry(30,160+height,50,25);
+        size1->setGeometry(110,160+height,50,25);
+        sideOptionsScene->addWidget(seg_no);
+        sideOptionsScene->addWidget(address1);
+        sideOptionsScene->addWidget(size1);
+        height+=40;
     }
+    table.clear();
+
 
 }
+

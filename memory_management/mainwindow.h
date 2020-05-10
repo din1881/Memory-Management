@@ -16,6 +16,8 @@
 #include <QButtonGroup>
 #include <QToolButton>
 #include <QLineEdit>
+#include <QMessageBox>
+#include <QCoreApplication>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -58,6 +60,7 @@ public:
     QToolButton *drawButton;
     QToolButton *restartButton;
     QToolButton *tableButton;
+    QToolButton *tableInputButton;
     QWidget * placeholder;
     QLabel *memorySizeLabel;
     QLineEdit *memorySize;
@@ -74,6 +77,8 @@ public:
     QLabel *hAddressLabel;
     QLineEdit *hSize;
     QLineEdit *hAddress;
+    QLabel* processTableLabel;
+    QLineEdit* processTablename;
     QToolButton *drawMyHoles;
     QString holes_num, memSize;
     QIcon processIcon;
@@ -91,6 +96,7 @@ public slots:
     void segmentsLayout();
     void drawProcess();
     void show_seg_table();
+    void get_table_name();
 
 };
 #endif // MAINWINDOW_H
