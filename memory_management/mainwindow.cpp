@@ -252,21 +252,17 @@ void MainWindow::memSizeAndAdd()
         hSize = new QLineEdit();
         hAddress = new QLineEdit();
 
-        qDebug()<<hAddress;
-
-        Holes *h = new Holes;
-
         hSize->setGeometry(0,50+height,80,30);
         hAddress->setGeometry(100,50+height,80,30);
-
-        h->startingAddress=(hAddress->text()).split(" ")[0].toInt();
-        h->size=(hSize->text()).split(" ")[0].toInt();
 
         sideOptionsScene->addWidget(hSize);
         sideOptionsScene->addWidget(hAddress);
 
+        holeSizeInputs.append(hSize);
+        holeStartingAddInputs.append(hAddress);
+
         height+=50;
-        holesQueue.append(h);
+
     }
 
     drawMyHoles = new QToolButton();
@@ -281,7 +277,22 @@ void MainWindow::memSizeAndAdd()
 void MainWindow::drawHoles()
 {
 
+    for(int i=0;i<holeSizeInputs.size();i++)
+    {
+        Holes *h = new Holes;
+
+        h->startingAddress = (holeStartingAddInputs[i]->text()).split(" ")[0].toInt();
+        h->size=(holeSizeInputs[i]->text()).split(" ")[0].toInt();
+
+
+        holesQueue.append(h);
+
+       qDebug()<<holesQueue[i]->size;
+    }
+
     processButton->setEnabled(true);
+
+
 }
 
 void MainWindow::segmentsLayout()
@@ -372,23 +383,19 @@ void MainWindow::drawSegInputs()
         segName = new QLineEdit();
         segSize = new QLineEdit();
 
-
-        Segments *s = new Segments;
-
         segName->setGeometry(5,50+height,80,30);
         segSize->setGeometry(100,50+height,80,30);
-
-        s->segmentName=(segName->text());
-        s->size=(segSize->text()).split(" ")[0].toInt();
-        s->processName=("P"+QString::number(proCounter));
 
         sideOptionsScene->addWidget(segName);
         sideOptionsScene->addWidget(segSize);
 
+        segNameInputs.append(segName);
+        segSizeInputs.append(segSize);
+
         height+=50;
-        segmQueue.append(s);
+
     }
-    proCounter++;
+
     NewProcess = new QToolButton();
     NewProcess->setStyleSheet("QToolButton{ background-color : #035aa6; border:none;}");
     //addHolesNo->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
@@ -398,7 +405,24 @@ void MainWindow::drawSegInputs()
     //addHoles->setAutoRaise(false);
     //addHolesNo->setText("Holes");
     sideOptionsScene->addWidget(NewProcess);
-    //connect(NewProcess,SIGNAL(clicked()),this,SLOT(addSegmentsLayout()));
+    connect(NewProcess,SIGNAL(clicked()),this,SLOT(get_data()));
+}
+
+void MainWindow::get_data()
+{
+    for(int i = 0; i < segNameInputs.size(); i++)
+    {
+        Segments *s = new Segments;
+
+        s->segmentName=(segNameInputs[i]->text());
+        s->size=(segSizeInputs[i]->text()).split(" ")[0].toInt();
+        s->processName=("P"+QString::number(proCounter));
+
+        segmQueue.append(s);
+        qDebug()<<segmQueue[i]->size;
+    }
+
+    proCounter++;
 }
 
 void MainWindow::drawProcess()

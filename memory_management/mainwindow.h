@@ -103,6 +103,10 @@ public:
     QLineEdit *segSize;
     QLabel *segNameLabel;
     QLabel *segSizeLabel;
+    QVector <QLineEdit *> segNameInputs;
+    QVector <QLineEdit *> segSizeInputs;
+    QVector <QLineEdit *> holeSizeInputs;
+    QVector <QLineEdit *> holeStartingAddInputs;
 
 
 
@@ -121,6 +125,8 @@ public slots:
     void get_table_name();
     void addSegmentsLayout();
     void drawSegInputs();
+    void get_data();
+
 
 };
 #endif // MAINWINDOW_H
