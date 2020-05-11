@@ -29,7 +29,7 @@ class Segments
 {
   public:
     int startingAddress, size;
-    QString segmentName, segmentSize;
+    QString segmentName, segmentSize, processName;
 };
 
 class Holes
@@ -87,6 +87,15 @@ public:
     QToolButton *drawMyHoles;
     QString holes_num, memSize;
     QIcon processIcon;
+    QToolButton *addNewProcess;
+    QLabel *pLabel;
+    QLineEdit *pLineEdit;
+    QToolButton *segInput;
+    QLineEdit *segName;
+    QLineEdit *segSize;
+    QLabel *segNameLabel;
+    QLabel *segSizeLabel;
+
 
 
     ~MainWindow();
@@ -102,6 +111,8 @@ public slots:
     void drawProcess();
     void show_seg_table();
     void get_table_name();
+    void addSegmentsLayout();
+    void drawSegInputs();
 
 };
 #endif // MAINWINDOW_H
