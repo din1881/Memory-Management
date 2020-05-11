@@ -95,6 +95,7 @@ public:
     QString holes_num, memSize;
     QIcon processIcon;
     QToolButton *addNewProcess;
+    QToolButton *NewProcess;
     QLabel *pLabel;
     QLineEdit *pLineEdit;
     QToolButton *segInput;

@@ -148,10 +148,10 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 
-    segmentTableScene = new QGraphicsScene();
+   /* segmentTableScene = new QGraphicsScene();
     segmentTableView = new QGraphicsView(segmentTableScene);
     segmentTableScene->setBackgroundBrush(Qt::white);
-    segmentTableView->setMinimumWidth(150);
+    segmentTableView->setMinimumWidth(150);*/
 
 
     memDrawingScene = new QGraphicsScene();
@@ -162,7 +162,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     Horizontal_layout->addWidget(sideButtonsView);
     Horizontal_layout->addWidget(sideOptionsView);
-    Horizontal_layout->addWidget(segmentTableView);
+    //Horizontal_layout->addWidget(segmentTableView);
     Horizontal_layout->addWidget(memDrawingView);
 
 
@@ -224,7 +224,6 @@ void MainWindow::lineEdits()
     //addHolesNo->setText("Holes");
     sideOptionsScene->addWidget(addHolesNo);
     connect(addHolesNo,SIGNAL(clicked()),this,SLOT(memSizeAndAdd())) ;
-
 }
 
 void MainWindow::memSizeAndAdd()
@@ -298,13 +297,14 @@ void MainWindow::segmentsLayout()
     addNewProcess = new QToolButton();
     addNewProcess->setStyleSheet("QToolButton{ background-color : #035aa6; border:none;}");
     //addHolesNo->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    addNewProcess->setGeometry(50,30,75,80);
+    addNewProcess->setGeometry(50,10,75,80);
     addNewProcess->setIcon(QIcon("../icons/add.png"));
     addNewProcess->setIconSize(QSize(50,50));
     //addHoles->setAutoRaise(false);
     //addHolesNo->setText("Holes");
     sideOptionsScene->addWidget(addNewProcess);
     connect(addNewProcess,SIGNAL(clicked()),this,SLOT(addSegmentsLayout())) ;
+
 
 
 }
@@ -318,25 +318,25 @@ void MainWindow::addSegmentsLayout()
     sideOptionsView->setMaximumWidth(250);
     sideOptionsView->setAlignment(Qt::AlignTop);
 
-    addNewProcess = new QToolButton();
-    addNewProcess->setStyleSheet("QToolButton{ background-color : #035aa6; border:none;}");
+    NewProcess = new QToolButton();
+    NewProcess->setStyleSheet("QToolButton{ background-color : #035aa6; border:none;}");
     //addHolesNo->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    addNewProcess->setGeometry(50,30,75,80);
-    addNewProcess->setIcon(QIcon("../icons/add.png"));
-    addNewProcess->setIconSize(QSize(50,50));
+    NewProcess->setGeometry(50,10,75,80);
+    NewProcess->setIcon(QIcon("../icons/add.png"));
+    NewProcess->setIconSize(QSize(50,50));
     //addHoles->setAutoRaise(false);
     //addHolesNo->setText("Holes");
-    sideOptionsScene->addWidget(addNewProcess);
-    connect(addNewProcess,SIGNAL(clicked()),this,SLOT(addSegmentsLayout())) ;
+    sideOptionsScene->addWidget(NewProcess);
+    connect(NewProcess,SIGNAL(clicked()),this,SLOT(addSegmentsLayout())) ;
 
     pLabel= new QLabel ();
     pLabel->setText("No. Of Segments");
     pLabel->setStyleSheet("background-color :#035aa6; color:black;font-size: 15px; font-family: Arial;");
-    pLabel->setGeometry(50,80,150,30);
+    pLabel->setGeometry(30,80,150,30);
     sideOptionsScene->addWidget(pLabel);
 
     pLineEdit= new   QLineEdit();
-    pLineEdit->setGeometry(45,130,120,30);
+    pLineEdit->setGeometry(25,120,120,30);
     pLineEdit->setStyleSheet("background-color:white;");
     sideOptionsScene->addWidget(pLineEdit);
 
@@ -362,12 +362,12 @@ void MainWindow::drawSegInputs()
     segNameLabel ->setStyleSheet("background-color : #035aa6; color:black; font-size: 15px; font-family: Arial;");
 
     segSizeLabel = new QLabel("Seg Size");
-    segSizeLabel->setGeometry(100,255,120,30);
+    segSizeLabel->setGeometry(110,255,120,30);
     segSizeLabel->setStyleSheet("background-color : #035aa6; color:black; font-size: 15px; font-family: Arial;");
 
     sideOptionsScene->addWidget(segNameLabel);
     sideOptionsScene->addWidget(segSizeLabel);
-    int height=280;
+    int height=270;
 
     for (int i = 0; i<(pLineEdit->text()).split(" ")[0].toInt(); i++)
     {
@@ -377,19 +377,20 @@ void MainWindow::drawSegInputs()
 
         Segments *s = new Segments;
 
-        segName->setGeometry(0,50+height,80,30);
+        segName->setGeometry(5,50+height,80,30);
         segSize->setGeometry(100,50+height,80,30);
 
         s->segmentName=(segName->text());
         s->size=(segSize->text()).split(" ")[0].toInt();
+        s->processName=("P"+QString::number(proCounter));
 
         sideOptionsScene->addWidget(segName);
         sideOptionsScene->addWidget(segSize);
 
         height+=50;
-        //hena el mafrood a-add el queue elli tasnim hat5do
-        //holesQueue.append(h);
+        segmQueue.append(s);
     }
+    proCounter++;
 
 }
 
