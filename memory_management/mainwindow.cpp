@@ -103,7 +103,7 @@ MainWindow::MainWindow(QWidget *parent)
     processButton->setText("Process");
     processButton->setEnabled(false);
     sideButtonsScene->addWidget(processButton);
-    connect(processButton,SIGNAL(clicked()),this,SLOT(segmentsLayout())) ;
+    connect(processButton,SIGNAL(clicked()),this,SLOT(addSegmentsLayout())) ;
 
 
 
@@ -318,7 +318,7 @@ void MainWindow::addSegmentsLayout()
     sideOptionsView->setMaximumWidth(250);
     sideOptionsView->setAlignment(Qt::AlignTop);
 
-    NewProcess = new QToolButton();
+   /* NewProcess = new QToolButton();
     NewProcess->setStyleSheet("QToolButton{ background-color : #035aa6; border:none;}");
     //addHolesNo->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     NewProcess->setGeometry(50,10,75,80);
@@ -327,47 +327,45 @@ void MainWindow::addSegmentsLayout()
     //addHoles->setAutoRaise(false);
     //addHolesNo->setText("Holes");
     sideOptionsScene->addWidget(NewProcess);
-    connect(NewProcess,SIGNAL(clicked()),this,SLOT(addSegmentsLayout())) ;
+    connect(NewProcess,SIGNAL(clicked()),this,SLOT(addSegmentsLayout())) ;*/
 
     pLabel= new QLabel ();
     pLabel->setText("No. Of Segments");
     pLabel->setStyleSheet("background-color :#035aa6; color:black;font-size: 15px; font-family: Arial;");
-    pLabel->setGeometry(30,80,150,30);
+    pLabel->setGeometry(30,30,150,30);
     sideOptionsScene->addWidget(pLabel);
 
     pLineEdit= new   QLineEdit();
-    pLineEdit->setGeometry(25,120,120,30);
+    pLineEdit->setGeometry(25,70,120,30);
     pLineEdit->setStyleSheet("background-color:white;");
     sideOptionsScene->addWidget(pLineEdit);
 
 
     segInput = new QToolButton();
     segInput->setStyleSheet("QToolButton{ background-color : #035aa6; border:none;}");
-    segInput->setGeometry(50,170,75,80);
+    segInput->setGeometry(50,120,75,80);
     segInput->setIcon(QIcon("../icons/check.png"));
     segInput->setIconSize(QSize(50,50));
     sideOptionsScene->addWidget(segInput);
     connect(segInput,SIGNAL(clicked()),this,SLOT(drawSegInputs())) ;
 
-
-
-
 }
+
 
 void MainWindow::drawSegInputs()
 {
 
     segNameLabel = new QLabel("Seg Name");
-    segNameLabel ->setGeometry(5,255,120,30);
+    segNameLabel ->setGeometry(5,205,120,30);
     segNameLabel ->setStyleSheet("background-color : #035aa6; color:black; font-size: 15px; font-family: Arial;");
 
     segSizeLabel = new QLabel("Seg Size");
-    segSizeLabel->setGeometry(110,255,120,30);
+    segSizeLabel->setGeometry(110,205,120,30);
     segSizeLabel->setStyleSheet("background-color : #035aa6; color:black; font-size: 15px; font-family: Arial;");
 
     sideOptionsScene->addWidget(segNameLabel);
     sideOptionsScene->addWidget(segSizeLabel);
-    int height=270;
+    int height=220;
 
     for (int i = 0; i<(pLineEdit->text()).split(" ")[0].toInt(); i++)
     {
@@ -391,7 +389,16 @@ void MainWindow::drawSegInputs()
         segmQueue.append(s);
     }
     proCounter++;
-
+    NewProcess = new QToolButton();
+    NewProcess->setStyleSheet("QToolButton{ background-color : #035aa6; border:none;}");
+    //addHolesNo->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    NewProcess->setGeometry(50,height+30,75,80);
+    NewProcess->setIcon(QIcon("../icons/add.png"));
+    NewProcess->setIconSize(QSize(50,50));
+    //addHoles->setAutoRaise(false);
+    //addHolesNo->setText("Holes");
+    sideOptionsScene->addWidget(NewProcess);
+    //connect(NewProcess,SIGNAL(clicked()),this,SLOT(addSegmentsLayout()));
 }
 
 void MainWindow::drawProcess()
