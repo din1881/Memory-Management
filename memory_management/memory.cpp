@@ -6,83 +6,216 @@ QPushButton * Create_New_Button()
     return new_button;
 }
 
-void Draw_Memory(QVector<Segments *> &segments,QVector <Holes *> &holes,QButtonGroup *BGroup,QGraphicsScene *Memory_Scene,QMainWindow *Mainn,int y)
+void Draw_Memory(QVector<Segments *> &segments,QVector <Holes *> &holes,QButtonGroup *BGroup,QGraphicsScene *Memory_Scene,QMainWindow *Mainn,QVector <QGraphicsProxyWidget *> PointersToButtonsDrawn,int y,int h,int index)
 {
-    int h = y;
-    int index = y;
-    int sum = holes.size() + segments.size();
-    for(int i = 0 ; i < sum;i++)
+
+    QVector <DrawingQueue> DrawingItems;
+    DrawingQueue Temp;
+    /* If the starting address of the first block (either hole or segment) was 0 then set it as first vector element */
+    if((segments.size() != 0) && (holes[0]->startingAddress > segments[0]->startingAddress))
+    {
+        h = segments[0]->startingAddress;
+    }else
+    {
+        h = holes[0]->startingAddress;
+    }
+    /* else add space before it and set the height to its start address */
+    if(h != 0 )
+    {
+        Temp.Name = "Reserved Space";
+        Temp.startingAddress = 0;
+        Temp.size = h;
+        DrawingItems.append(Temp);
+
+    }
+
+
+    /*  Adding all segments to the vector */
+
+    for(int j = 0 ; j < segments.size();j++)
+    {
+        Temp.Name = segments[j]->segmentName;
+        Temp.startingAddress = segments[j]->startingAddress;
+        Temp.size = segments[j]->size;
+        h+=segments[j]->size;
+        DrawingItems.append(Temp);
+    }
+    /*  Adding all segments to the vector */
+
+    for(int k = 0; k < holes.size();k++)
     {
 
-        for(int j = 0 ; j < segments.size();j++)
+        Temp.Name = "Hole";
+        Temp.startingAddress = holes[k]->startingAddress;
+        Temp.size = holes[k]->size;
+        h+=holes[k]->size;
+        DrawingItems.append(Temp);
+    }
+
+    /* After the previous loops , we now got a vector of blocks of holes and segments that need to be arranged */
+
+
+    for(int i = 0 ; i < (DrawingItems.size() - 1);i++)
+    {
+        for(int j = i+1;j<DrawingItems.size();j++)
         {
-            if(segments[j]->startingAddress == h)
+            if(DrawingItems[j].startingAddress < DrawingItems[i].startingAddress)
             {
-                BGroup->addButton(Create_New_Button(),index);
-                BGroup->button(index)->setStyleSheet(" QPushButton{ background-color:#AFEEEE; color:black; font-size: 17px; font-family: Arial;border-radius: 10%;} "
-                                                     "QPushButton:hover { background-color: white; border-radius:10%;border-width: 0.5px; border-style: solid; border-color: gray ;color:black;} ");
-                BGroup->button(index)->setGeometry(0,y,150,50);
-                BGroup->button(index)->setText("Segment "+ QString::number(j));
-                h+=segments[j]->size;
-                y+=50;
-                index ++;
-//                qDebug()<<"added segment " +  QString::number(j) + ", Starting : "<< segments[j]->startingAddress<<"Size: "<< segments[j]->size <<" height :" <<h<< "The value of i :"<<index;
-                break;
-            }
-        }
-        for(int k = 0; k < holes.size();k++)
-        {
-            if(holes[k]->startingAddress == h)
-            {
-                BGroup->addButton(Create_New_Button(),index);
-                BGroup->button(index)->setStyleSheet(" QPushButton{ background-color:black; color:white; font-size: 17px; font-family: Arial;border-radius: 10%;} "
-                                                     "QPushButton:hover { background-color: white; border-radius:10%;border-width: 0.5px; border-style: solid; border-color: gray ;color:black;} ");
-                BGroup->button(index)->setGeometry(0,y,150,50);
-                y+=50;
-                BGroup->button(index)->setText("Hole");
-                h+=holes[k]->size;
-                index ++;
-//                qDebug()<<"added hole" +  QString::number(k) + " , Starting : "<< holes[k]->startingAddress<<"Size: "<< holes[k]->size<<" height :" <<h << "The value of i :"<<index;
-                break;
+                Temp = DrawingItems[j];
+                DrawingItems[j]=DrawingItems[i];
+                DrawingItems[i]= Temp;
+
             }
         }
     }
+    /* Adding spaces between arranged items at the end of the vecotr */
+    h = 0;
+    for(int i = 0 ; i < DrawingItems.size();i++)
+    {
+        if(DrawingItems[i].startingAddress > h)
+        {
+            /* These is a space before this item as the min address is less than its starting address */
+            Temp.Name = "Reserved Space";
+            Temp.size = DrawingItems[i].startingAddress - h;
+            Temp.startingAddress = h;
+            DrawingItems.append(Temp);
+            h+=Temp.size;
+            h+=DrawingItems[i].size;
+
+        }else if (DrawingItems[i].startingAddress == h)
+        {
+            h+= DrawingItems[i].size;
+        }
+    }
+    /* Arranging the vector after adding the space */
+    for(int i = 0 ; i < (DrawingItems.size() - 1);i++)
+    {
+        for(int j = i+1;j<DrawingItems.size();j++)
+        {
+            if(DrawingItems[j].startingAddress < DrawingItems[i].startingAddress)
+            {
+                Temp = DrawingItems[j];
+                DrawingItems[j]=DrawingItems[i];
+                DrawingItems[i]= Temp;
+
+            }
+        }
+    }
+    //    for(int i = 0 ; i < DrawingItems.size();i++)
+    //    {
+    //        qDebug()<<"Drawing Item After ["<<i<<"] :"<<DrawingItems[i].Name << "Starting : "<<DrawingItems[i].startingAddress <<" , Size :"<<DrawingItems[i].size;
+    //    }
+
+
+    /* Adding items to drawing group button  */
+    index = 0;
+    for(int i = 0 ; i < DrawingItems.size();i++)
+    {
+        if(DrawingItems[i].Name == "Reserved Space")
+        {
+            BGroup->addButton(Create_New_Button(),index);
+
+            BGroup->button(index)->setStyleSheet(QString("background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #000000, stop: 0.4 "
+                                                         "	#00CED1, stop:1 #AFEEEE)"));
+            BGroup->button(index)->setGeometry(0,y,150,50);
+            y+=50;
+            BGroup->button(index)->setText(DrawingItems[i].Name);
+            index ++;
+        }else if (DrawingItems[i].Name == "Hole")
+        {
+            BGroup->addButton(Create_New_Button(),index);
+            BGroup->button(index)->setStyleSheet(" QPushButton{ background-color:#000000; color:white; font-size: 17px; font-family: Arial;border-radius: 10%;} "
+                                                 "QPushButton:hover { background-color: white; border-radius:10%;border-width: 0.5px; border-style: solid; border-color: gray ;color:black;} ");
+            BGroup->button(index)->setGeometry(0,y,150,50);
+            y+=50;
+            BGroup->button(index)->setText(DrawingItems[i].Name);
+            index ++;
+        }else
+        {
+            BGroup->addButton(Create_New_Button(),index);
+            BGroup->button(index)->setStyleSheet(" QPushButton{ background-color:#00CED1; color:white; font-size: 17px; font-family: Arial;border-radius: 10%;} "
+                                                 "QPushButton:hover { background-color: white; border-radius:10%;border-width: 0.5px; border-style: solid; border-color: gray ;color:black;} ");
+            BGroup->button(index)->setGeometry(0,y,150,50);
+            y+=50;
+            BGroup->button(index)->setText(DrawingItems[i].Name);
+            index ++;
+        }
+
+
+    }
+    for(int i = 0 ; i < (BGroup->buttons().length());i++)
+    {
+        qDebug()<<"BGroup["<<i<<"] :"<<BGroup->button(i)->text();
+    }
+
     for(int i = 0 ; i < (BGroup->buttons().length()) ;i++)
     {
-        Memory_Scene->addWidget(BGroup->button(i));
-
+        PointersToButtonsDrawn.append(Memory_Scene->addWidget(BGroup->button(i)));
     }
-
     QPushButton::connect(BGroup, static_cast<void(QButtonGroup::*)(QAbstractButton *)>(&QButtonGroup::buttonClicked),
-            [=](QAbstractButton *button){
+                         [=](QAbstractButton *button){
         if(button->text() != "Hole")
         {
 
             int ret =QMessageBox::critical(Mainn,"Memory Modification Requested","Are you sure you want to de-allocate this segment ?",QMessageBox::Yes | QMessageBox::No,QMessageBox::Yes);
             switch (ret) {
             case QMessageBox::Yes:
-                for(int i = 1;i<(BGroup->buttons().length());i++)
+                for(int i = 0 ; i < (BGroup->buttons().length()) ; i++ )
                 {
-                    if(BGroup->button(i)->text() == button->text())
+                    if(button->text() == BGroup->button(i)->text() && (BGroup->button(i)->y() == button->y()))
                     {
-                        button->setStyleSheet(" QPushButton{ background-color:black; color:white; font-size: 17px; font-family: Arial;border-radius: 10%;} "
-                                              "QPushButton:hover { background-color: white; border-radius:10%;border-width: 0.5px; border-style: solid; border-color: gray ;color:black;} ");
+                        if(button->text()!="Hole")
+                        {
 
-                        button->setText("Hole");
+                            qDebug()<<"value of add in BGroup"<<BGroup->button(i)->y();
+                            qDebug()<<"Value of add in button"<<button->y();
+                            if((i > 0) && ((BGroup->button(i-1)->text() == "Hole")) )
+                            {
 
+                                BGroup->button(i-1)->setGeometry(BGroup->button(i-1)->x(),BGroup->button(i-1)->y(),button->width(),BGroup->button(i-1)->height()+button->height());
+                                qDebug()<<button->text();
+                                /* I am expanding the hole above me , then replacing my place with it , then removing it*/
+                                QAbstractButton * Temp = BGroup->button(i-1);
+                                BGroup->addButton(BGroup->button(i),i-1);
+                                BGroup->addButton(Temp,i);
+                                Memory_Scene->removeItem(PointersToButtonsDrawn[i]);
+                                /* Check hena lw el ta7ty hole egm3ny 3alhaa */
+                                if((i != BGroup->buttons().size() - 1 ) &&(BGroup->button(i+1)->text() == "Hole"))
+                                {
 
-                    }
-                }
+                                    BGroup->button(i)->setGeometry(BGroup->button(i)->x(),BGroup->button(i)->y(),button->width(),BGroup->button(i)->height()+BGroup->button(i+1)->height());
+                                    qDebug()<<button->text();
+                                    Temp = BGroup->button(i);
+                                    BGroup->addButton(BGroup->button(i+1),i);
+                                    BGroup->addButton(Temp,i+1);
+                                    Memory_Scene->removeItem(PointersToButtonsDrawn[i+1]);
+                                }
+                            }else if((i == 0) && ((BGroup->button(i+1)->text() == "Hole")))
+                            {
+                                     BGroup->button(i+1)->setGeometry(BGroup->button(i)->x(),BGroup->button(i)->y(),button->width(),BGroup->button(i)->height()+BGroup->button(i+1)->height());
+                                     qDebug()<<button->text();
+                                     Memory_Scene->removeItem(PointersToButtonsDrawn[i]);
+                            }
+                             else
+                            {
+                                     button->setStyleSheet(" QPushButton{ background-color:black; color:white; font-size: 17px; font-family: Arial;border-radius: 10%;} "
+                                                           "QPushButton:hover { background-color: white; border-radius:10%;border-width: 0.5px; border-style: solid; border-color: gray ;color:black;} ");
 
-                break;
+                                     button->setText("Hole");
+                        }
+                        }
+                        }
 
-            case QMessageBox::No:
-                break;
-            default:
-                qDebug()<<"Error Happened";
-                break;
-            }
-        }
+                        }
+                                     break;
 
-    });
-}
+                     case QMessageBox::No:
+                                     break;
+                     default:
+                                     qDebug()<<"Error Happened";
+                                     break;
+                        }
+                        }
+
+                        });
+                        }

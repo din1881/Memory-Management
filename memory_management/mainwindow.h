@@ -19,11 +19,17 @@
 #include <QMessageBox>
 #include <QCoreApplication>
 #include <QPushButton>
-
+#include <QGraphicsProxyWidget>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
+class DrawingQueue
+{
+public:
+    int startingAddress,size;
+    QString Name;
+};
 
 class Segments
 {
@@ -44,7 +50,8 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr);
-
+    QVector <QGraphicsProxyWidget *> PointersToButtonsDrawn;
+    QVector <DrawingQueue *> DrawingItems;
     QButtonGroup *BGroup;
     QVector<Segments *> segments;
     QVector <Holes *> holes;

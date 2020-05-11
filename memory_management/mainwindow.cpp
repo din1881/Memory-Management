@@ -12,34 +12,32 @@ MainWindow::MainWindow(QWidget *parent)
     //ui->setupUi(this);
     /******************** Creating Testcases ***************************/
     BGroup = new QButtonGroup();
-    for(int i = 0 ; i <5 ;i ++)
-    {
-        Segments * Segment_Temp = new Segments();
-        Segment_Temp->segmentName = "Segment"+QString::number(i);
-        segments.append(Segment_Temp);
-    }
-    segments[0]->size = 1000;
-    segments[0]->startingAddress = 1400;
-    segments[1]->size = 400;
-    segments[1]->startingAddress = 6300;
-    segments[2]->startingAddress = 4300;
-    segments[2]->size = 400;
-    segments[3]->size = 1100;
-    segments[3]->startingAddress = 3200;
-    segments[4]->size = 1000;
-    segments[4]->startingAddress = 4700;
+//    for(int i = 0 ; i <5 ;i ++)
+//    {
+//        Segments * Segment_Temp = new Segments();
+//        Segment_Temp->segmentName = "Segment"+QString::number(i);
+//        segments.append(Segment_Temp);
+//    }
+//    segments[0]->size = 1000;
+//    segments[0]->startingAddress = 1400;
+//    segments[1]->size = 400;
+//    segments[1]->startingAddress = 6300;
+//    segments[2]->startingAddress = 4300;
+//    segments[2]->size = 400;
+//    segments[3]->size = 1100;
+//    segments[3]->startingAddress = 3200;
+//    segments[4]->size = 1000;
+//    segments[4]->startingAddress = 4700;
     for(int i = 0;i <3;i++)
     {
         Holes *Hole_Temp = new Holes();
         holes.append(Hole_Temp);
     }
 
-    holes[0]->startingAddress = 0;
-    holes[0]->size = 1400;
-    holes[1]->startingAddress = 2400;
-    holes[1]->size = 800;
-    holes[2]->startingAddress = 5700;
-    holes[2]->size = 600;
+    holes[0]->startingAddress = 1000;
+    holes[0]->size = 500;
+    holes[1]->startingAddress = 2000;
+    holes[1]->size = 200;
 
 
     /******************** Creating Testcase ***************************/
@@ -406,7 +404,7 @@ void MainWindow::drawProcess()
     }
 
     /*insert memory drawing here*/
-    Draw_Memory(segments,holes,BGroup,memDrawingScene,this,0);
+    Draw_Memory(segments,holes,BGroup,memDrawingScene,this,PointersToButtonsDrawn,0,0,0);
 }
 
 void MainWindow::get_table_name(){
