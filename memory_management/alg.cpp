@@ -40,17 +40,24 @@ void Best_fit(QVector<Segments *> &s, QVector<Segments *> &large_Seg,QVector <Ho
 
 
 void Deallocate(QVector<Segments *> &s, QVector <Holes *> &h, int index){
-    for(int i=0 ; i<s.size();i++){
-        if( i == index){
-
-        }
-    }
+    int found_flag =0;
     Holes *new_hole = new Holes();
     new_hole->startingAddress =s[index]->startingAddress;
     new_hole->size= s[index]->size;
-    h.append(new_hole);
     s.erase(s.begin()+index);
 
+    //for compaction
+    for(int i=0; i<h.size();i++){
+        if(new_hole->startingAddress == (h[i]->startingAddress+h[i]->size +1)){
+            h[i]->size= h[i]->size+new_hole->size;
+            found_flag=1;
+            break;
+        }
+    }
+
+    if(found_flag == 0){
+        h.append(new_hole);
+    }
 }
 
 //void Deallocate(QVector<Segments *> &s, QVector <Holes *> &h, int y_button, int w_button){
