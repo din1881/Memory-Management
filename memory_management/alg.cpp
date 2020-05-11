@@ -23,6 +23,7 @@ void Best_fit(QVector<Segments *> &s, QVector<Segments *> &large_Seg,QVector <Ho
                     //decrease the size of the hole
                         h[j]->size=h[j]->size-s[i]->size;
                         h[j]->startingAddress=h[j]->startingAddress+s[i]->size;
+                        if(h[j]->size == 0) h.erase(h.begin()+j);
                         break;
 
 
@@ -37,23 +38,38 @@ void Best_fit(QVector<Segments *> &s, QVector<Segments *> &large_Seg,QVector <Ho
 
 }
 
-void Deallocate(QVector<Segments *> &s, QVector <Holes *> &h, int y_button, int w_button){
 
-    //add a new hole
-    Holes* new_hole;
-    new_hole->size=w_button;
-    new_hole->startingAddress=y_button;
-    h.append(new_hole);
+void Deallocate(QVector<Segments *> &s, QVector <Holes *> &h, int index){
+    for(int i=0 ; i<s.size();i++){
+        if( i == index){
 
-    //delete the segment from the vector
-    for(int i=0; i<s.size();i++){
-        if(s[i]->startingAddress==y_button){
-            s.erase(s.begin()+i);
-            break;
         }
     }
+    Holes *new_hole = new Holes();
+    new_hole->startingAddress =s[index]->startingAddress;
+    new_hole->size= s[index]->size;
+    h.append(new_hole);
+    s.erase(s.begin()+index);
 
 }
+
+//void Deallocate(QVector<Segments *> &s, QVector <Holes *> &h, int y_button, int w_button){
+
+    //add a new hole
+  //  Holes* new_hole = new Holes();
+    //new_hole->size=w_button;
+    //new_hole->startingAddress=y_button;
+    //h.append(new_hole);
+
+    //delete the segment from the vector
+    //for(int i=0; i<s.size();i++){
+      //  if(s[i]->startingAddress==y_button){
+        //    s.erase(s.begin()+i);
+          //  break;
+       // }
+   // }
+
+//}
 
 void get_segment_table (QVector<Segments *> &table,QVector<Segments *> &large_seg, QString name){
     for(int i=0; i<large_seg.size();i++){
