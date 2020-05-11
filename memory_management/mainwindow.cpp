@@ -2,7 +2,6 @@
 #include "alg.h"
 #include "memory.h"
 
-
 int proCounter=0;
 
 MainWindow::MainWindow(QWidget *parent)
@@ -212,12 +211,28 @@ void MainWindow::lineEdits()
     noHoles->setStyleSheet("background-color:white;");
     sideOptionsScene->addWidget(noHoles);
 
+    bestFitBox = new QCheckBox();
+    bestFitBox->setStyleSheet("background-color :#035aa6; color:black; font-size: 15px; font-family: Arial;");
+    bestFitBox->setGeometry(15,190,18,18);
+    bestFitLabel = new QLabel("Best Fit");
+    bestFitLabel->setStyleSheet("background-color :#035aa6; color:black; font-size: 15px; font-family: Arial;");
+    bestFitLabel->setGeometry(35,190,80,18);
+    sideOptionsScene->addWidget(bestFitBox);
+    sideOptionsScene->addWidget(bestFitLabel);
 
+    firstFitBox = new QCheckBox();
+    firstFitBox->setStyleSheet("background-color :#035aa6; color:black; font-size: 15px; font-family: Arial;");
+    firstFitBox->setGeometry(95,190,18,18);
+    firstFitLabel= new QLabel("First Fit");
+    firstFitLabel->setStyleSheet("background-color :#035aa6; color:black; font-size: 15px; font-family: Arial;");
+    firstFitLabel->setGeometry(110,190,80,18);
+    sideOptionsScene->addWidget(firstFitBox);
+    sideOptionsScene->addWidget(firstFitLabel);
 
     addHolesNo = new QToolButton();
     addHolesNo->setStyleSheet("QToolButton{ background-color : #035aa6; border:none;}");
     //addHolesNo->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    addHolesNo->setGeometry(50,180,75,80);
+    addHolesNo->setGeometry(50,210,75,80);
     addHolesNo->setIcon(QIcon("../icons/add.png"));
     addHolesNo->setIconSize(QSize(50,50));
     //addHoles->setAutoRaise(false);
@@ -228,14 +243,16 @@ void MainWindow::lineEdits()
 
 void MainWindow::memSizeAndAdd()
 {
+    if(bestFitBox->isChecked()) bestflag=1;
+    else if(firstFitBox->isChecked()) firstflag=1;
     memSize= memorySize->text();
     holes_num = noHoles->text();
     qDebug()<<"hey1: "<<holes_num;
     hSizeLabel = new QLabel("Hole Size");
     hAddressLabel = new QLabel("Starting Address");
 
-    hSizeLabel ->setGeometry(5,245,65,30);
-    hAddressLabel->setGeometry(90,245,120,30);
+    hSizeLabel ->setGeometry(5,280,65,30);
+    hAddressLabel->setGeometry(90,280,120,30);
 
     hSizeLabel ->setStyleSheet("background-color : #035aa6; color:black; font-size: 15px; font-family: Arial;");
     hAddressLabel->setStyleSheet("background-color : #035aa6; color:black; font-size: 15px; font-family: Arial;");
@@ -245,7 +262,7 @@ void MainWindow::memSizeAndAdd()
 
 
 
-    int height=245;
+    int height=290;
     qDebug()<<"hey2: "<<holes_num;
     for (int i = 0; i<holes_num.split(" ")[0].toInt(); i++)
     {
@@ -328,17 +345,6 @@ void MainWindow::addSegmentsLayout()
     sideOptionsView->setMinimumWidth(250);
     sideOptionsView->setMaximumWidth(250);
     sideOptionsView->setAlignment(Qt::AlignTop);
-
-   /* NewProcess = new QToolButton();
-    NewProcess->setStyleSheet("QToolButton{ background-color : #035aa6; border:none;}");
-    //addHolesNo->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    NewProcess->setGeometry(50,10,75,80);
-    NewProcess->setIcon(QIcon("../icons/add.png"));
-    NewProcess->setIconSize(QSize(50,50));
-    //addHoles->setAutoRaise(false);
-    //addHolesNo->setText("Holes");
-    sideOptionsScene->addWidget(NewProcess);
-    connect(NewProcess,SIGNAL(clicked()),this,SLOT(addSegmentsLayout())) ;*/
 
     pLabel= new QLabel ();
     pLabel->setText("No. Of Segments");
@@ -428,15 +434,16 @@ void MainWindow::get_data()
 void MainWindow::drawProcess()
 {
 
-    Best_fit(segmQueue,large_segments,holeQueue);
-    qDebug()<<"t:"<<holeQueue[0]->size;
+    if(bestflag) {Best_fit(segmQueue,large_segments,holesQueue); bestflag=0;}
+    else if(firstflag) {First_fit(segmQueue,large_segments,holesQueue); firstflag=0;}
+
 
     for(int i=0; i<large_segments.size();i++){
         qDebug()<<large_segments[i]->startingAddress<<endl;
     }
 
     /*insert memory drawing here*/
-    Draw_Memory(segments,holes,BGroup,memDrawingScene,this,PointersToButtonsDrawn,0,0,0);
+    Draw_Memory(large_segments,holesQueue,BGroup,memDrawingScene,this,PointersToButtonsDrawn,0,0,0);
 }
 
 void MainWindow::get_table_name(){

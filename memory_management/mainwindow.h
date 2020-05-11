@@ -20,6 +20,7 @@
 #include <QCoreApplication>
 #include <QPushButton>
 #include <QGraphicsProxyWidget>
+#include <QCheckBox>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -49,6 +50,8 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+    int bestflag=0;
+    int firstflag=0;
     MainWindow(QWidget *parent = nullptr);
     QVector <QGraphicsProxyWidget *> PointersToButtonsDrawn;
     QVector <DrawingQueue *> DrawingItems;
@@ -107,6 +110,11 @@ public:
     QVector <QLineEdit *> segSizeInputs;
     QVector <QLineEdit *> holeSizeInputs;
     QVector <QLineEdit *> holeStartingAddInputs;
+    QCheckBox *bestFitBox;
+    QCheckBox *firstFitBox;
+    QLabel *bestFitLabel;
+    QLabel * firstFitLabel;
+
 
 
 
