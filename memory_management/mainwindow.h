@@ -52,6 +52,7 @@ class MainWindow : public QMainWindow
 public:
     int bestflag=0;
     int firstflag=0;
+    int First_Drawn = 0;
     MainWindow(QWidget *parent = nullptr);
     QVector <QGraphicsProxyWidget *> PointersToButtonsDrawn;
     QVector <DrawingQueue *> DrawingItems;
@@ -114,7 +115,6 @@ public:
     QCheckBox *firstFitBox;
     QLabel *bestFitLabel;
     QLabel * firstFitLabel;
-
 
 
 

@@ -35,6 +35,16 @@ void Best_fit(QVector<Segments *> &s, QVector<Segments *> &large_Seg,QVector <Ho
 
     //delete the small seg so that it can be filled again from the user
     s.clear();
+    for (int i = 0; i < h.size(); i++) {
+            for (int j = 0; j < h.size(); j++) {
+                if (h[i]->startingAddress < h[j]->startingAddress) {
+                    Holes* temp = h[j];
+                    h[j] = h[i];
+                    h[i] = temp;
+                }
+            }
+
+        }
 
 }
 
@@ -80,6 +90,7 @@ void First_fit(QVector<Segments *> &s, QVector<Segments *> &large_Seg,QVector <H
 
 
 void Deallocate(QVector<Segments *> &s, QVector <Holes *> &h, int index){
+    qDebug()<<"Deallocate Triggered";
     int found_flag =0;
     Holes *new_hole = new Holes();
     new_hole->startingAddress =s[index]->startingAddress;

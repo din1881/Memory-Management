@@ -1,7 +1,6 @@
 #include "mainwindow.h"
-#include "alg.h"
 #include "memory.h"
-
+#include "alg.h"
 int proCounter=0;
 
 MainWindow::MainWindow(QWidget *parent)
@@ -172,6 +171,8 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 }
+
+
 
 
 MainWindow::~MainWindow()
@@ -434,19 +435,48 @@ void MainWindow::get_data()
 void MainWindow::drawProcess()
 {
 
-    if(bestflag) {Best_fit(segmQueue,large_segments,holesQueue); bestflag=0;}
-    else if(firstflag) {First_fit(segmQueue,large_segments,holesQueue); firstflag=0;}
+    for(int i=0; i<segmQueue.size();i++){
+        qDebug()<<"Segments of "<<i<<", Size : "<<segmQueue[i]->size<<endl;
+
+    }
+Best_fit(segmQueue,large_segments,holesQueue); bestflag=0;
+
+        if(bestflag) {
+            qDebug()<<"working";
+            Best_fit(segmQueue,large_segments,holesQueue); bestflag=0;}
+        else if(firstflag) {First_fit(segmQueue,large_segments,holesQueue); firstflag=0;}
+
+
 
 
     for(int i=0; i<large_segments.size();i++){
-        qDebug()<<large_segments[i]->startingAddress<<endl;
+        qDebug()<<"Large_Segments of "<<i<<", Size : "<<large_segments[i]->size<<endl;
+
     }
 
     for(int i=0; i<holesQueue.size();i++){
         qDebug()<<"holes:"<<holesQueue[i]->size<<endl;
          qDebug()<<"holes address:"<<holesQueue[i]->startingAddress<<endl;
     }
+    if(First_Drawn == 1)
+    {
+        qDebug()<<"Condition Triggered";
+        Horizontal_layout->removeWidget(memDrawingView);
+        memDrawingScene->clear();
+        PointersToButtonsDrawn.clear();
+        memDrawingScene = new QGraphicsScene();
 
+        memDrawingView = new QGraphicsView(memDrawingScene);
+        memDrawingScene->setBackgroundBrush(Qt::white);
+        memDrawingView->setMinimumWidth(250);
+        Horizontal_layout->addWidget(memDrawingView);
+        /* Need to check for scene clear */
+        qDebug()<< "Size of BGroup : "<<BGroup->buttons().size();
+        qDebug()<<"Size of pinters to buttons :"<<PointersToButtonsDrawn.size();
+    }
+
+    First_Drawn = 1;
+    qDebug()<<"Flag : "<<First_Drawn;
     /*insert memory drawing here*/
     Draw_Memory(large_segments,holesQueue,BGroup,memDrawingScene,this,PointersToButtonsDrawn,0,0,0);
 }

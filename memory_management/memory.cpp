@@ -1,5 +1,5 @@
 #include "memory.h"
-
+#include "alg.h"
 QPushButton * Create_New_Button()
 {
     QPushButton *new_button = new QPushButton();
@@ -8,7 +8,19 @@ QPushButton * Create_New_Button()
 
 void Draw_Memory(QVector<Segments *> &segments,QVector <Holes *> &holes,QButtonGroup *BGroup,QGraphicsScene *Memory_Scene,QMainWindow *Mainn,QVector <QGraphicsProxyWidget *> PointersToButtonsDrawn,int y,int h,int index)
 {
+    for (int i = 0; i < segments.size(); i++)
+    {
+        for (int j = 0; j < segments.size(); j++)
+        {
+            if (segments[i]->startingAddress < segments[j]->startingAddress)
+        {
+                Segments* temp = segments[j];
+                segments[j] = segments[i];
+                segments[i] = temp;
+            }
+        }
 
+    }
     QVector <DrawingQueue> DrawingItems;
     DrawingQueue Temp;
     /* If the starting address of the first block (either hole or segment) was 0 then set it as first vector element */
@@ -17,11 +29,15 @@ void Draw_Memory(QVector<Segments *> &segments,QVector <Holes *> &holes,QButtonG
         h = segments[0]->startingAddress;
     }else
     {
+        qDebug()<<"Captured first hole";
+
         h = holes[0]->startingAddress;
+        qDebug()<<h;
     }
     /* else add space before it and set the height to its start address */
-    if(h != 0 )
+    if( ((holes[0]->startingAddress !=0)||(segments.size()!=0 && segments[0]->startingAddress !=0))  && (h != 0) )
     {
+        qDebug()<<"Passed codition";
         Temp.Name = "Reserved Space";
         Temp.startingAddress = 0;
         Temp.size = h;
@@ -160,6 +176,9 @@ void Draw_Memory(QVector<Segments *> &segments,QVector <Holes *> &holes,QButtonG
             int ret =QMessageBox::critical(Mainn,"Memory Modification Requested","Are you sure you want to de-allocate this segment ?",QMessageBox::Yes | QMessageBox::No,QMessageBox::Yes);
             switch (ret) {
             case QMessageBox::Yes:
+//                QVector <Segments *> S;
+//                QVector <Holes *> H;
+//                Deallocate(S,H,9);
                 for(int i = 0 ; i < (BGroup->buttons().length()) ; i++ )
                 {
                     if(button->text() == BGroup->button(i)->text() && (BGroup->button(i)->y() == button->y()))
