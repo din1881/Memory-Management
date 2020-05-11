@@ -23,7 +23,7 @@ void Best_fit(QVector<Segments *> &s, QVector<Segments *> &large_Seg,QVector <Ho
                     //decrease the size of the hole
                         h[j]->size=h[j]->size-s[i]->size;
                         h[j]->startingAddress=h[j]->startingAddress+s[i]->size;
-//                        if(h[j]->size == 0) h.erase(h.begin()+j);
+                        //if(h[j]->size == 0) h.erase(h.begin()+j);
                         break;
 
 

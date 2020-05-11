@@ -40,22 +40,22 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     /******************** Creating Testcase ***************************/
-    Segments* Temp_Segment= new Segments;
-    Segments* Temp_Segment1= new Segments;
-    Temp_Segment->size=700;
-    Temp_Segment1->size=300;
-    Temp_Segment1->segmentName="p1";
-    Temp_Segment->segmentName="p1";
-    segmQueue.append(Temp_Segment);
-    segmQueue.append(Temp_Segment1);
+    //Segments* Temp_Segment= new Segments;
+    //Segments* Temp_Segment1= new Segments;
+    //Temp_Segment->size=700;
+    //Temp_Segment1->size=300;
+    //Temp_Segment1->segmentName="p1";
+    //Temp_Segment->segmentName="p1";
+    //segmQueue.append(Temp_Segment);
+    //segmQueue.append(Temp_Segment1);
     //Holes* Temp_Hole = new Holes;
     //Temp_Hole->startingAddress = 0;
     //Temp_Hole->size = 500;
     //holeQueue.append(Temp_Hole);
-    Holes* Temp_Hole1 = new Holes;
-    Temp_Hole1->startingAddress = 2400;
-    Temp_Hole1->size = 1000;
-    holeQueue.append(Temp_Hole1);
+    //Holes* Temp_Hole1 = new Holes;
+    //Temp_Hole1->startingAddress = 2400;
+    //Temp_Hole1->size = 1000;
+    //holeQueue.append(Temp_Hole1);
     //Holes* Temp_Hole2 = new Holes;
     //Temp_Hole2->startingAddress = 5700;
     //Temp_Hole2->size = 1400;
@@ -440,6 +440,11 @@ void MainWindow::drawProcess()
 
     for(int i=0; i<large_segments.size();i++){
         qDebug()<<large_segments[i]->startingAddress<<endl;
+    }
+
+    for(int i=0; i<holesQueue.size();i++){
+        qDebug()<<"holes:"<<holesQueue[i]->size<<endl;
+         qDebug()<<"holes address:"<<holesQueue[i]->startingAddress<<endl;
     }
 
     /*insert memory drawing here*/
