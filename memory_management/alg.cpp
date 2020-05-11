@@ -38,6 +38,45 @@ void Best_fit(QVector<Segments *> &s, QVector<Segments *> &large_Seg,QVector <Ho
 
 }
 
+void First_fit(QVector<Segments *> &s, QVector<Segments *> &large_Seg,QVector <Holes *> &h)
+{
+    //sorting holes according to address
+    for (int i = 0; i < h.size(); i++)
+    {
+        for (int j = 0; j < h.size(); j++)
+        {
+            if (h[i]->startingAddress < h[j]->startingAddress)
+        {
+                Holes* temp = h[j];
+                h[j] = h[i];
+                h[i] = temp;
+            }
+        }
+
+    }
+
+    for (int i = 0; i < s.size(); i++)
+    {
+            for (int j = 0; j < h.size(); j++)
+            {
+                if (s[i]->size <= h[j]->size)
+                {
+                    s[i]->startingAddress=h[j]->startingAddress;
+                    //to fill the large vector of segments of all processes to be drawn
+                    large_Seg.push_back(s[i]);
+                    //decrease the size of the hole
+                    h[j]->size=h[j]->size-s[i]->size;
+                    h[j]->startingAddress=h[j]->startingAddress+s[i]->size;
+                    break;
+                }
+
+            }
+        }
+
+    //delete the small seg so that it can be filled again from the user
+    s.clear();
+}
+
 
 void Deallocate(QVector<Segments *> &s, QVector <Holes *> &h, int index){
     int found_flag =0;
