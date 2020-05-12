@@ -485,9 +485,10 @@ void MainWindow::get_data()
     for(int i = 0; i < segNameInputs.size(); i++)
     {
         Segments *s = new Segments;
-        s->segmentName=(segNameInputs[i]->text());
+
         s->size=(segSizeInputs[i]->text()).split(" ")[0].toInt();
         s->processName=("P"+QString::number(proCounter));
+        s->segmentName=(s->processName+":"+segNameInputs[i]->text());
 
         segmQueue.append(s);
         qDebug()<<segmQueue[i]->size;
