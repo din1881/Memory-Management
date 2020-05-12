@@ -321,6 +321,53 @@ void MainWindow::drawHoles()
 
     processButton->setEnabled(true);
 
+    //for adding reserved segments
+    for (int i = 0; i < holesQueue.size(); i++)
+    {
+        for (int j = 0; j < holesQueue.size(); j++)
+        {
+            if (holesQueue[i]->startingAddress < holesQueue[j]->startingAddress)
+        {
+                Holes* temp = holesQueue[j];
+                holesQueue[j] = holesQueue[i];
+                holesQueue[i] = temp;
+            }
+        }
+
+    }
+    if(holesQueue[0]->startingAddress !=0){
+
+        Segments* reserved_seg= new Segments;
+        reserved_seg->segmentName="Reserved";
+        reserved_seg->startingAddress=0;
+        reserved_seg->size=holesQueue[0]->startingAddress -reserved_seg->startingAddress;
+        large_segments.append(reserved_seg);
+    }
+    if(holesQueue[holesQueue.size()-1]->startingAddress +holesQueue[holesQueue.size()-1]->size != memSize.split(" ")[0].toInt()){
+        Segments* reserved_seg= new Segments;
+        reserved_seg->segmentName="Reserved";
+        reserved_seg->startingAddress=holesQueue[holesQueue.size()-1]->startingAddress +holesQueue[holesQueue.size()-1]->size;
+        reserved_seg->size=memSize.split(" ")[0].toInt() -reserved_seg->startingAddress;
+        large_segments.append(reserved_seg);
+    }
+    for(int i =0; i<holesQueue.size();i++){
+        if(i ==holesQueue.size()-1)break;
+        else {
+
+                if(holesQueue[i]->startingAddress+holesQueue[i]->size != holesQueue[i+1]->startingAddress){
+                    Segments* reserved_seg= new Segments;
+                    reserved_seg->segmentName="Reserved";
+                    reserved_seg->startingAddress=(holesQueue[i]->startingAddress+holesQueue[i]->size);
+                    reserved_seg->size=holesQueue[i+1]->startingAddress -reserved_seg->startingAddress;;
+                    large_segments.append(reserved_seg);
+                }
+
+
+        }
+
+
+    }
+
 
 }
 
@@ -445,6 +492,7 @@ void MainWindow::get_data()
 
 void MainWindow::drawProcess()
 {
+
 
     if(bestflag) {Best_fit(segmQueue,large_segments,holesQueue); }
     else if(firstflag) {First_fit(segmQueue,large_segments,holesQueue);}

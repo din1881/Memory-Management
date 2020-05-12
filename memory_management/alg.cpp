@@ -17,6 +17,8 @@ qDebug()<<"best fit";
 
     }
 
+
+
     //for compaction
     for(int i=0; i<h.size();i++){
         for(int j=0; j<h.size();j++){
@@ -47,7 +49,7 @@ qDebug()<<"best fit";
 
     for (int i = 0; i < s.size(); i++) {
             for (int j = 0; j < h.size(); j++) {
-                if (s[i]->size <= h[j]->size) {
+                if ((s[i]->size <= h[j]->size) &&s[i]->segmentName != "Reserved") {
                     s[i]->startingAddress=h[j]->startingAddress;
                     //to fill the large vector of segments of all processes to be drawn
                     large_Seg.push_back(s[i]);
@@ -126,6 +128,7 @@ void Deallocate(QVector<Segments *> &s, QVector <Holes *> &h, int index){
     Holes *new_hole = new Holes();
     new_hole->startingAddress =s[index]->startingAddress;
     new_hole->size= s[index]->size;
+    qDebug()<<" is it>"<<s[index]->segmentName<<index;
     s.erase(s.begin()+index);
     h.append(new_hole);
     qDebug()<<"holes size after appending"<<h.size();
