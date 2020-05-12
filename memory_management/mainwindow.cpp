@@ -478,7 +478,8 @@ Best_fit(segmQueue,large_segments,holesQueue); bestflag=0;
     First_Drawn = 1;
     qDebug()<<"Flag : "<<First_Drawn;
     /*insert memory drawing here*/
-    Draw_Memory(large_segments,holesQueue,BGroup,memDrawingScene,this,PointersToButtonsDrawn,0,0,0);
+    qDebug()<<"Value of global variable in function body : "<<global_index;
+    Draw_Memory(large_segments,holesQueue,BGroup,memDrawingScene,this,PointersToButtonsDrawn,0,0,0,&global_index, &large_segments);
 }
 
 void MainWindow::get_table_name(){

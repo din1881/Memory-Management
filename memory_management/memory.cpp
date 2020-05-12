@@ -1,12 +1,11 @@
 #include "memory.h"
-#include "alg.h"
 QPushButton * Create_New_Button()
 {
     QPushButton *new_button = new QPushButton();
     return new_button;
 }
 
-void Draw_Memory(QVector<Segments *> &segments,QVector <Holes *> &holes,QButtonGroup *BGroup,QGraphicsScene *Memory_Scene,QMainWindow *Mainn,QVector <QGraphicsProxyWidget *> PointersToButtonsDrawn,int y,int h,int index)
+void Draw_Memory(QVector<Segments *> &segments,QVector <Holes *> &holes,QButtonGroup *BGroup,QGraphicsScene *Memory_Scene,QMainWindow *Mainn,QVector <QGraphicsProxyWidget *> PointersToButtonsDrawn,int y,int h,int index,int *global,QVector<Segments *> *segments_loop)
 {
     for (int i = 0; i < segments.size(); i++)
     {
@@ -168,17 +167,33 @@ void Draw_Memory(QVector<Segments *> &segments,QVector <Holes *> &holes,QButtonG
     {
         PointersToButtonsDrawn.append(Memory_Scene->addWidget(BGroup->button(i)));
     }
+    qDebug()<<"Segments size : "<<segments_loop->size();
     QPushButton::connect(BGroup, static_cast<void(QButtonGroup::*)(QAbstractButton *)>(&QButtonGroup::buttonClicked),
                          [=](QAbstractButton *button){
+        qDebug()<<"Segments size : "<<segments_loop->size();
         if(button->text() != "Hole")
         {
 
             int ret =QMessageBox::critical(Mainn,"Memory Modification Requested","Are you sure you want to de-allocate this segment ?",QMessageBox::Yes | QMessageBox::No,QMessageBox::Yes);
             switch (ret) {
             case QMessageBox::Yes:
-//                QVector <Segments *> S;
-//                QVector <Holes *> H;
-//                Deallocate(S,H,9);
+                qDebug()<<"Segments size : "<<segments.size();
+                /* For loop to get the index of the button pressed if it is a segment */
+                if(segments_loop->size()!= 0)
+                {
+                    for(int i = 0 ; i < (segments_loop->size());i++)
+                    {
+                        if(button->text() == segments_loop->at(i)->segmentName)
+                        {
+                            *global = i;
+                        }
+
+
+
+
+                    }
+                }
+                qDebug()<<"Value of global variable :"<<*global;
                 for(int i = 0 ; i < (BGroup->buttons().length()) ; i++ )
                 {
                     if(button->text() == BGroup->button(i)->text() && (BGroup->button(i)->y() == button->y()))

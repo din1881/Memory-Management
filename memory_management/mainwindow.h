@@ -50,9 +50,11 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+    int global_index;
     int bestflag=0;
     int firstflag=0;
     int First_Drawn = 0;
+    int Deallocation_flag = 0;
     MainWindow(QWidget *parent = nullptr);
     QVector <QGraphicsProxyWidget *> PointersToButtonsDrawn;
     QVector <DrawingQueue *> DrawingItems;
