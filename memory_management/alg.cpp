@@ -24,7 +24,6 @@ qDebug()<<"best fit";
         for(int j=0; j<h.size();j++){
             if(h[i]->startingAddress == (h[j]->startingAddress+h[j]->size) && (h[j]->startingAddress != h[i]->startingAddress) ){
                 h[j]->size= h[i]->size+h[j]->size;
-                //h[j]->startingAddress=h[i]->startingAddress;
                 h.erase(h.begin()+i);
                 break;
             }
@@ -98,11 +97,23 @@ void First_fit(QVector<Segments *> &s, QVector<Segments *> &large_Seg,QVector <H
 
     }
 
+    //for compaction
+    for(int i=0; i<h.size();i++){
+        for(int j=0; j<h.size();j++){
+            if(h[i]->startingAddress == (h[j]->startingAddress+h[j]->size) && (h[j]->startingAddress != h[i]->startingAddress) ){
+                h[j]->size= h[i]->size+h[j]->size;
+                h.erase(h.begin()+i);
+                break;
+            }
+        }
+
+    }
+
     for (int i = 0; i < s.size(); i++)
     {
             for (int j = 0; j < h.size(); j++)
             {
-                if (s[i]->size <= h[j]->size)
+                if ((s[i]->size <= h[j]->size) &&s[i]->segmentName != "Reserved")
                 {
                     s[i]->startingAddress=h[j]->startingAddress;
                     //to fill the large vector of segments of all processes to be drawn
@@ -119,6 +130,16 @@ void First_fit(QVector<Segments *> &s, QVector<Segments *> &large_Seg,QVector <H
 
     //delete the small seg so that it can be filled again from the user
     s.clear();
+    for (int i = 0; i < h.size(); i++) {
+            for (int j = 0; j < h.size(); j++) {
+                if (h[i]->startingAddress < h[j]->startingAddress) {
+                    Holes* temp = h[j];
+                    h[j] = h[i];
+                    h[i] = temp;
+                }
+            }
+
+        }
 }
 
 
@@ -126,6 +147,7 @@ void Deallocate(QVector<Segments *> &s, QVector <Holes *> &h, int index){
     qDebug()<<"Deallocate Triggered";
     int found_flag =0;
 
+    //sorting according to address
     for (int i = 0; i < s.size(); i++)
     {
         for (int j = 0; j < s.size(); j++)
@@ -139,13 +161,33 @@ void Deallocate(QVector<Segments *> &s, QVector <Holes *> &h, int index){
         }
 
     }
-    Holes *new_hole = new Holes();
-    new_hole->startingAddress =s[index]->startingAddress;
-    new_hole->size= s[index]->size;
-    qDebug()<<" is it>"<<s[index]->segmentName<<index;
-    s.erase(s.begin()+index);
-    h.append(new_hole);
-    qDebug()<<"holes size after appending"<<h.size();
+
+    Segments *new_seg = new Segments();
+    new_seg= s[index];
+
+    for(int i=0; i<s.size();i++){
+        if(s[i]->processName == new_seg->processName){
+            //add hole with same size of the segment
+            Holes *new_hole = new Holes();
+            new_hole->startingAddress =s[i]->startingAddress;
+            new_hole->size= s[i]->size;
+            qDebug()<<" is it>"<<s[index]->segmentName<<index;
+            s.erase(s.begin()+i);
+            h.append(new_hole);
+            qDebug()<<"holes size after appending"<<h.size();
+        }
+    }
+
+
+
+//    //add hole with same size of the segment
+//    Holes *new_hole = new Holes();
+//    new_hole->startingAddress =s[index]->startingAddress;
+//    new_hole->size= s[index]->size;
+//    qDebug()<<" is it>"<<s[index]->segmentName<<index;
+//    s.erase(s.begin()+index);
+//    h.append(new_hole);
+//    qDebug()<<"holes size after appending"<<h.size();
 
     //sorting holes according to address
     for (int i = 0; i < h.size(); i++)

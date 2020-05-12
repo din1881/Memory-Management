@@ -341,6 +341,7 @@ void MainWindow::drawHoles()
 
         Segments* reserved_seg= new Segments;
         reserved_seg->segmentName="Reserved"+ QString::number(re_flag);
+        reserved_seg->processName="Reserved"+ QString::number(re_flag);
         qDebug()<<reserved_seg->segmentName<<"***********";
         reserved_seg->startingAddress=0;
         reserved_seg->size=holesQueue[0]->startingAddress -reserved_seg->startingAddress;
@@ -355,6 +356,7 @@ void MainWindow::drawHoles()
                 if(holesQueue[i]->startingAddress+holesQueue[i]->size != holesQueue[i+1]->startingAddress){
                     Segments* reserved_seg= new Segments;
                     reserved_seg->segmentName="Reserved"+ QString::number(re_flag);
+                    reserved_seg->processName="Reserved"+ QString::number(re_flag);
                     reserved_seg->startingAddress=(holesQueue[i]->startingAddress+holesQueue[i]->size);
                     reserved_seg->size=holesQueue[i+1]->startingAddress -reserved_seg->startingAddress;;
                     large_segments.append(reserved_seg);
@@ -370,6 +372,7 @@ void MainWindow::drawHoles()
     if(holesQueue[holesQueue.size()-1]->startingAddress +holesQueue[holesQueue.size()-1]->size != memSize.split(" ")[0].toInt()){
         Segments* reserved_seg= new Segments;
         reserved_seg->segmentName="Reserved"+QString::number(re_flag);
+        reserved_seg->processName="Reserved"+ QString::number(re_flag);
         reserved_seg->startingAddress=holesQueue[holesQueue.size()-1]->startingAddress +holesQueue[holesQueue.size()-1]->size;
         reserved_seg->size=memSize.split(" ")[0].toInt() -reserved_seg->startingAddress;
         large_segments.append(reserved_seg);
@@ -515,10 +518,8 @@ void MainWindow::drawProcess()
          qDebug()<<"holes address:"<<holesQueue[i]->startingAddress<<endl;
     }
 
-    for(int i=0; i<holesQueue.size();i++){
-        qDebug()<<"holes:"<<holesQueue[i]->size<<endl;
-         qDebug()<<"holes address:"<<holesQueue[i]->startingAddress<<endl;
-    }
+
+
     if(First_Drawn == 1)
     {
         qDebug()<<"Condition Triggered";
