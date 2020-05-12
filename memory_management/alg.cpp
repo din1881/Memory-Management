@@ -125,6 +125,20 @@ void First_fit(QVector<Segments *> &s, QVector<Segments *> &large_Seg,QVector <H
 void Deallocate(QVector<Segments *> &s, QVector <Holes *> &h, int index){
     qDebug()<<"Deallocate Triggered";
     int found_flag =0;
+
+    for (int i = 0; i < s.size(); i++)
+    {
+        for (int j = 0; j < s.size(); j++)
+        {
+            if (s[i]->startingAddress < s[j]->startingAddress)
+        {
+                Segments* temp = s[j];
+                s[j] = s[i];
+                s[i] = temp;
+            }
+        }
+
+    }
     Holes *new_hole = new Holes();
     new_hole->startingAddress =s[index]->startingAddress;
     new_hole->size= s[index]->size;

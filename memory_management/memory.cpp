@@ -56,7 +56,8 @@ void Draw_Memory(QVector<Segments *> &segments,QVector <Holes *> &holes,QButtonG
         Temp.Name = "Reserved Space";
         Temp.startingAddress = 0;
         Temp.size = h;
-        DrawingItems.append(Temp);
+        //Tasnim commented this
+        //DrawingItems.append(Temp);
 
     }
 
@@ -109,7 +110,6 @@ void Draw_Memory(QVector<Segments *> &segments,QVector <Holes *> &holes,QButtonG
             Temp.Name = "Reserved Space";
             Temp.size = DrawingItems[i].startingAddress - h;
             Temp.startingAddress = h;
-            //Tasnim Edit this line
             //DrawingItems.append(Temp);
             h+=Temp.size;
             h+=DrawingItems[i].size;
@@ -213,7 +213,6 @@ void Draw_Memory(QVector<Segments *> &segments,QVector <Holes *> &holes,QButtonG
                     }
                 }
                 qDebug()<<"Value of global variable hereee:"<<*global;
-                //Tasnim commented this block
 //                for(int i = 0 ; i < (BGroup->buttons().length()) ; i++ )
 //                {
 //                    if(button->text() == BGroup->button(i)->text() && (BGroup->button(i)->y() == button->y()))

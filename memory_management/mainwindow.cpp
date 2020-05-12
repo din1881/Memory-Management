@@ -275,7 +275,7 @@ void MainWindow::memSizeAndAdd()
 
 
     int height=290;
-    qDebug()<<"hey2: "<<holes_num;
+    //qDebug()<<"hey2: "<<holes_num;
     for (int i = 0; i<holes_num.split(" ")[0].toInt(); i++)
     {
         hSize = new QLineEdit();
@@ -335,37 +335,44 @@ void MainWindow::drawHoles()
         }
 
     }
+
+    int re_flag=0;
     if(holesQueue[0]->startingAddress !=0){
 
         Segments* reserved_seg= new Segments;
-        reserved_seg->segmentName="Reserved";
+        reserved_seg->segmentName="Reserved"+ QString::number(re_flag);
+        qDebug()<<reserved_seg->segmentName<<"***********";
         reserved_seg->startingAddress=0;
         reserved_seg->size=holesQueue[0]->startingAddress -reserved_seg->startingAddress;
         large_segments.append(reserved_seg);
+        re_flag++;
     }
-    if(holesQueue[holesQueue.size()-1]->startingAddress +holesQueue[holesQueue.size()-1]->size != memSize.split(" ")[0].toInt()){
-        Segments* reserved_seg= new Segments;
-        reserved_seg->segmentName="Reserved";
-        reserved_seg->startingAddress=holesQueue[holesQueue.size()-1]->startingAddress +holesQueue[holesQueue.size()-1]->size;
-        reserved_seg->size=memSize.split(" ")[0].toInt() -reserved_seg->startingAddress;
-        large_segments.append(reserved_seg);
-    }
+
     for(int i =0; i<holesQueue.size();i++){
         if(i ==holesQueue.size()-1)break;
         else {
 
                 if(holesQueue[i]->startingAddress+holesQueue[i]->size != holesQueue[i+1]->startingAddress){
                     Segments* reserved_seg= new Segments;
-                    reserved_seg->segmentName="Reserved";
+                    reserved_seg->segmentName="Reserved"+ QString::number(re_flag);
                     reserved_seg->startingAddress=(holesQueue[i]->startingAddress+holesQueue[i]->size);
                     reserved_seg->size=holesQueue[i+1]->startingAddress -reserved_seg->startingAddress;;
                     large_segments.append(reserved_seg);
+                    re_flag++;
                 }
 
 
         }
 
 
+    }
+
+    if(holesQueue[holesQueue.size()-1]->startingAddress +holesQueue[holesQueue.size()-1]->size != memSize.split(" ")[0].toInt()){
+        Segments* reserved_seg= new Segments;
+        reserved_seg->segmentName="Reserved"+QString::number(re_flag);
+        reserved_seg->startingAddress=holesQueue[holesQueue.size()-1]->startingAddress +holesQueue[holesQueue.size()-1]->size;
+        reserved_seg->size=memSize.split(" ")[0].toInt() -reserved_seg->startingAddress;
+        large_segments.append(reserved_seg);
     }
 
 
