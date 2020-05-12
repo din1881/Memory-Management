@@ -248,7 +248,7 @@ void MainWindow::memSizeAndAdd()
     else if(firstFitBox->isChecked()) firstflag=1;
     memSize= memorySize->text();
     holes_num = noHoles->text();
-    qDebug()<<"hey1: "<<holes_num;
+    //qDebug()<<"hey1: "<<holes_num;
     hSizeLabel = new QLabel("Hole Size");
     hAddressLabel = new QLabel("Starting Address");
 
@@ -417,37 +417,30 @@ void MainWindow::drawSegInputs()
 
 void MainWindow::get_data()
 {
+    qDebug()<<"hereee";
     for(int i = 0; i < segNameInputs.size(); i++)
     {
         Segments *s = new Segments;
-
+        qDebug()<<"hereee";
         s->segmentName=(segNameInputs[i]->text());
+        qDebug()<<"hereee";
         s->size=(segSizeInputs[i]->text()).split(" ")[0].toInt();
         s->processName=("P"+QString::number(proCounter));
+        qDebug()<<"till here";
 
         segmQueue.append(s);
         qDebug()<<segmQueue[i]->size;
     }
-
+    segNameInputs.clear();
+    segSizeInputs.clear();
     proCounter++;
 }
 
 void MainWindow::drawProcess()
 {
 
-    for(int i=0; i<segmQueue.size();i++){
-        qDebug()<<"Segments of "<<i<<", Size : "<<segmQueue[i]->size<<endl;
-
-    }
-Best_fit(segmQueue,large_segments,holesQueue); bestflag=0;
-
-        if(bestflag) {
-            qDebug()<<"working";
-            Best_fit(segmQueue,large_segments,holesQueue); bestflag=0;}
-        else if(firstflag) {First_fit(segmQueue,large_segments,holesQueue); firstflag=0;}
-
-
-
+    if(bestflag) {Best_fit(segmQueue,large_segments,holesQueue); }
+    else if(firstflag) {First_fit(segmQueue,large_segments,holesQueue);}
 
     for(int i=0; i<large_segments.size();i++){
         qDebug()<<"Large_Segments of "<<i<<", Size : "<<large_segments[i]->size<<endl;
@@ -458,6 +451,7 @@ Best_fit(segmQueue,large_segments,holesQueue); bestflag=0;
         qDebug()<<"holes:"<<holesQueue[i]->size<<endl;
          qDebug()<<"holes address:"<<holesQueue[i]->startingAddress<<endl;
     }
+
     if(First_Drawn == 1)
     {
         qDebug()<<"Condition Triggered";

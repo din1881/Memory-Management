@@ -131,7 +131,7 @@ void Deallocate(QVector<Segments *> &s, QVector <Holes *> &h, int index){
 
 void get_segment_table (QVector<Segments *> &table,QVector<Segments *> &large_seg, QString name){
     for(int i=0; i<large_seg.size();i++){
-        if(large_seg[i]->segmentName == name){
+        if(large_seg[i]->processName == name){
             table.push_back(large_seg[i]);
         }
     }
