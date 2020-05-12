@@ -138,7 +138,7 @@ MainWindow::MainWindow(QWidget *parent)
     deallocate_button ->setStyleSheet("QToolButton{ background-color :#035aa6; border:none; }");
     deallocate_button ->setGeometry(0,450,75,75);
     deallocate_button ->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    deallocate_button ->setIcon(QIcon("../icons/hole.png"));
+    deallocate_button ->setIcon(QIcon("../icons/de.png"));
     deallocate_button ->setIconSize(QSize(50,50));
     deallocate_button ->setText("Deallocate");
     sideButtonsScene->addWidget(deallocate_button );

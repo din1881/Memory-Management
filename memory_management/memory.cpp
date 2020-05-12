@@ -9,6 +9,9 @@ QPushButton * Create_New_Button()
 void Draw_Memory(QVector<Segments *> &segments,QVector <Holes *> &holes,QButtonGroup *BGroup,QGraphicsScene *Memory_Scene,QMainWindow *Mainn,QVector <QGraphicsProxyWidget *> PointersToButtonsDrawn,int y,int h,int index,int *global,QVector<Segments *> *segments_loop)
 {
 
+    QLabel *add;
+    QLabel *End;
+
     for (int i = 0; i < holes.size(); i++)
     {
         for (int j = 0; j < holes.size(); j++)
@@ -114,6 +117,7 @@ void Draw_Memory(QVector<Segments *> &segments,QVector <Holes *> &holes,QButtonG
             h+=Temp.size;
             h+=DrawingItems[i].size;
 
+
         }else if (DrawingItems[i].startingAddress == h)
         {
             h+= DrawingItems[i].size;
@@ -143,34 +147,58 @@ void Draw_Memory(QVector<Segments *> &segments,QVector <Holes *> &holes,QButtonG
     index = 0;
     for(int i = 0 ; i < DrawingItems.size();i++)
     {
-        if(DrawingItems[i].Name == "Reserved Space")
+        add = new QLabel;
+        End = new QLabel;
+        if(DrawingItems[i].Name.contains("Reserved"))
         {
+            add->setGeometry(155,y-10,100,20);
+            add->setText(QString::number(DrawingItems[i].startingAddress));
+            add->setStyleSheet("background-color:white;");
+            Memory_Scene->addWidget(add);
             BGroup->addButton(Create_New_Button(),index);
 
-            BGroup->button(index)->setStyleSheet(QString("background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #000000, stop: 0.4 "
-                                                         "	#00CED1, stop:1 #AFEEEE)"));
-            BGroup->button(index)->setGeometry(0,y,150,50);
-            y+=50;
+            BGroup->button(index)->setStyleSheet(QString("background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #000000, stop: 0.2 "
+                                                         "	#232f2f,stop:0.4 #344747 , stop:0.6 #577777, stop:0.8 #8cbebe,stop:1 #AFEEEE)"));
+            BGroup->button(index)->setGeometry(0,y,150,DrawingItems[i].size);
+            y+=DrawingItems[i].size;
             BGroup->button(index)->setText(DrawingItems[i].Name);
             index ++;
+
         }else if (DrawingItems[i].Name == "Hole")
         {
+            add->setGeometry(155,y-10,100,20);
+            add->setText(QString::number(DrawingItems[i].startingAddress));
+            add->setStyleSheet("background-color:white;");
+            Memory_Scene->addWidget(add);
             BGroup->addButton(Create_New_Button(),index);
             BGroup->button(index)->setStyleSheet(" QPushButton{ background-color:#000000; color:white; font-size: 17px; font-family: Arial;border-radius: 10%;} "
                                                  "QPushButton:hover { background-color: white; border-radius:10%;border-width: 0.5px; border-style: solid; border-color: gray ;color:black;} ");
-            BGroup->button(index)->setGeometry(0,y,150,50);
-            y+=50;
+            BGroup->button(index)->setGeometry(0,y,150,DrawingItems[i].size);
+            y+=DrawingItems[i].size;
             BGroup->button(index)->setText(DrawingItems[i].Name);
             index ++;
+
         }else
         {
+            add->setGeometry(155,y-10,100,20);
+            add->setText(QString::number(DrawingItems[i].startingAddress));
+            add->setStyleSheet("background-color:white;");
+            Memory_Scene->addWidget(add);
             BGroup->addButton(Create_New_Button(),index);
             BGroup->button(index)->setStyleSheet(" QPushButton{ background-color:#00CED1; color:white; font-size: 17px; font-family: Arial;border-radius: 10%;} "
                                                  "QPushButton:hover { background-color: white; border-radius:10%;border-width: 0.5px; border-style: solid; border-color: gray ;color:black;} ");
-            BGroup->button(index)->setGeometry(0,y,150,50);
-            y+=50;
+            BGroup->button(index)->setGeometry(0,y,150,DrawingItems[i].size);
+            y+=DrawingItems[i].size;
             BGroup->button(index)->setText(DrawingItems[i].Name);
             index ++;
+
+        }
+        if(i == DrawingItems.size() - 1)
+        {
+            End->setGeometry(155,y-15,100,20);
+            End->setText(QString::number(DrawingItems[i].startingAddress + DrawingItems[i].size));
+            End->setStyleSheet("background-color:white;");
+            Memory_Scene->addWidget(End);
         }
 
 
@@ -212,7 +240,7 @@ void Draw_Memory(QVector<Segments *> &segments,QVector <Holes *> &holes,QButtonG
 
                     }
                 }
-                qDebug()<<"Value of global variable hereee:"<<*global;
+//                qDebug()<<"Value of global variable hereee:"<<*global;
 //                for(int i = 0 ; i < (BGroup->buttons().length()) ; i++ )
 //                {
 //                    if(button->text() == BGroup->button(i)->text() && (BGroup->button(i)->y() == button->y()))

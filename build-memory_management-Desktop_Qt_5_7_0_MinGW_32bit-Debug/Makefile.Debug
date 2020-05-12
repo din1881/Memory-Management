@@ -728,8 +728,8 @@ debug/mainwindow.o: ../memory_management/mainwindow.cpp ../memory_management/mai
 		C:/Qt/Qt5.7.0/5.7/mingw53_32/include/QtWidgets/qgraphicsitem.h \
 		C:/Qt/Qt5.7.0/5.7/mingw53_32/include/QtWidgets/QCheckBox \
 		C:/Qt/Qt5.7.0/5.7/mingw53_32/include/QtWidgets/qcheckbox.h \
-		../memory_management/alg.h \
-		../memory_management/memory.h
+		../memory_management/memory.h \
+		../memory_management/alg.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/mainwindow.o ../memory_management/mainwindow.cpp
 
 debug/memory.o: ../memory_management/memory.cpp ../memory_management/memory.h \
