@@ -1,7 +1,7 @@
 #include "alg.h"
 
 void Best_fit(QVector<Segments *> &s, QVector<Segments *> &large_Seg,QVector <Holes *> &h){
-
+qDebug()<<"best fit";
     //sorting holes according to address
     for (int i = 0; i < h.size(); i++)
     {
@@ -20,7 +20,7 @@ void Best_fit(QVector<Segments *> &s, QVector<Segments *> &large_Seg,QVector <Ho
     //for compaction
     for(int i=0; i<h.size();i++){
         for(int j=0; j<h.size();j++){
-            if(h[i]->startingAddress == (h[j]->startingAddress+h[j]->size -1) && (h[j]->startingAddress != h[i]->startingAddress) ){
+            if(h[i]->startingAddress == (h[j]->startingAddress+h[j]->size) && (h[j]->startingAddress != h[i]->startingAddress) ){
                 h[j]->size= h[i]->size+h[j]->size;
                 //h[j]->startingAddress=h[i]->startingAddress;
                 h.erase(h.begin()+i);
@@ -53,7 +53,7 @@ void Best_fit(QVector<Segments *> &s, QVector<Segments *> &large_Seg,QVector <Ho
                     large_Seg.push_back(s[i]);
                     //decrease the size of the hole
                         h[j]->size=h[j]->size-s[i]->size;
-                        h[j]->startingAddress=h[j]->startingAddress+s[i]->size-1;
+                        h[j]->startingAddress=h[j]->startingAddress+s[i]->size;
                         if(h[j]->size == 0) h.erase(h.begin()+j);
                         break;
 
@@ -148,10 +148,11 @@ void Deallocate(QVector<Segments *> &s, QVector <Holes *> &h, int index){
     //for compaction
     for(int i=0; i<h.size();i++){
         for(int j=0; j<h.size();j++){
-            if(h[i]->startingAddress == (h[j]->startingAddress+h[j]->size -1) && (h[j]->startingAddress != h[i]->startingAddress) ){
-                qDebug()<<"hi"<<h[j]->startingAddress<<" "<<h[j]->size-1;
-                h[i]->size= h[i]->size+h[j]->size;
-                h.erase(h.begin()+j);
+            if(h[i]->startingAddress == (h[j]->startingAddress+h[j]->size ) && (h[j]->startingAddress != h[i]->startingAddress) ){
+                qDebug()<<"hi"<<h[j]->startingAddress<<" "<<h[j]->size;
+                h[j]->size= h[i]->size+h[j]->size;
+                h.erase(h.begin()+i);
+                i=0;
                 break;
             }
         }
