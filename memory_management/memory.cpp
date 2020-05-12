@@ -1,4 +1,5 @@
 #include "memory.h"
+
 QPushButton * Create_New_Button()
 {
     QPushButton *new_button = new QPushButton();
@@ -7,6 +8,21 @@ QPushButton * Create_New_Button()
 
 void Draw_Memory(QVector<Segments *> &segments,QVector <Holes *> &holes,QButtonGroup *BGroup,QGraphicsScene *Memory_Scene,QMainWindow *Mainn,QVector <QGraphicsProxyWidget *> PointersToButtonsDrawn,int y,int h,int index,int *global,QVector<Segments *> *segments_loop)
 {
+
+    for (int i = 0; i < holes.size(); i++)
+    {
+        for (int j = 0; j < holes.size(); j++)
+        {
+            if (holes[i]->startingAddress < holes[j]->startingAddress)
+        {
+                Holes* temp = holes[j];
+                holes[j] = holes[i];
+                holes[i] = temp;
+            }
+        }
+
+    }
+
     for (int i = 0; i < segments.size(); i++)
     {
         for (int j = 0; j < segments.size(); j++)
@@ -170,7 +186,7 @@ void Draw_Memory(QVector<Segments *> &segments,QVector <Holes *> &holes,QButtonG
     qDebug()<<"Segments size : "<<segments_loop->size();
     QPushButton::connect(BGroup, static_cast<void(QButtonGroup::*)(QAbstractButton *)>(&QButtonGroup::buttonClicked),
                          [=](QAbstractButton *button){
-        qDebug()<<"Segments size : "<<segments_loop->size();
+      //  qDebug()<<"Segments size : "<<segments_loop->size();
         if(button->text() != "Hole")
         {
 
@@ -186,6 +202,8 @@ void Draw_Memory(QVector<Segments *> &segments,QVector <Holes *> &holes,QButtonG
                         if(button->text() == segments_loop->at(i)->segmentName)
                         {
                             *global = i;
+
+
                         }
 
 
@@ -193,54 +211,54 @@ void Draw_Memory(QVector<Segments *> &segments,QVector <Holes *> &holes,QButtonG
 
                     }
                 }
-                qDebug()<<"Value of global variable :"<<*global;
-                for(int i = 0 ; i < (BGroup->buttons().length()) ; i++ )
-                {
-                    if(button->text() == BGroup->button(i)->text() && (BGroup->button(i)->y() == button->y()))
-                    {
-                        if(button->text()!="Hole")
-                        {
+                qDebug()<<"Value of global variable hereee:"<<*global;
+//                for(int i = 0 ; i < (BGroup->buttons().length()) ; i++ )
+//                {
+//                    if(button->text() == BGroup->button(i)->text() && (BGroup->button(i)->y() == button->y()))
+//                    {
+//                        if(button->text()!="Hole")
+//                        {
 
-                            qDebug()<<"value of add in BGroup"<<BGroup->button(i)->y();
-                            qDebug()<<"Value of add in button"<<button->y();
-                            if((i > 0) && ((BGroup->button(i-1)->text() == "Hole")) )
-                            {
+//                           // qDebug()<<"value of add in BGroup"<<BGroup->button(i)->y();
+//                            //qDebug()<<"Value of add in button"<<button->y();
+//                            if((i > 0) && ((BGroup->button(i-1)->text() == "Hole")) )
+//                            {
 
-                                BGroup->button(i-1)->setGeometry(BGroup->button(i-1)->x(),BGroup->button(i-1)->y(),button->width(),BGroup->button(i-1)->height()+button->height());
-                                qDebug()<<button->text();
-                                /* I am expanding the hole above me , then replacing my place with it , then removing it*/
-                                QAbstractButton * Temp = BGroup->button(i-1);
-                                BGroup->addButton(BGroup->button(i),i-1);
-                                BGroup->addButton(Temp,i);
-                                Memory_Scene->removeItem(PointersToButtonsDrawn[i]);
-                                /* Check hena lw el ta7ty hole egm3ny 3alhaa */
-                                if((i != BGroup->buttons().size() - 1 ) &&(BGroup->button(i+1)->text() == "Hole"))
-                                {
+//                                BGroup->button(i-1)->setGeometry(BGroup->button(i-1)->x(),BGroup->button(i-1)->y(),button->width(),BGroup->button(i-1)->height()+button->height());
+//                                qDebug()<<button->text();
+//                                /* I am expanding the hole above me , then replacing my place with it , then removing it*/
+//                                QAbstractButton * Temp = BGroup->button(i-1);
+//                                BGroup->addButton(BGroup->button(i),i-1);
+//                                BGroup->addButton(Temp,i);
+//                                Memory_Scene->removeItem(PointersToButtonsDrawn[i]);
+//                                /* Check hena lw el ta7ty hole egm3ny 3alhaa */
+//                                if((i != BGroup->buttons().size() - 1 ) &&(BGroup->button(i+1)->text() == "Hole"))
+//                                {
 
-                                    BGroup->button(i)->setGeometry(BGroup->button(i)->x(),BGroup->button(i)->y(),button->width(),BGroup->button(i)->height()+BGroup->button(i+1)->height());
-                                    qDebug()<<button->text();
-                                    Temp = BGroup->button(i);
-                                    BGroup->addButton(BGroup->button(i+1),i);
-                                    BGroup->addButton(Temp,i+1);
-                                    Memory_Scene->removeItem(PointersToButtonsDrawn[i+1]);
-                                }
-                            }else if((i == 0) && ((BGroup->button(i+1)->text() == "Hole")))
-                            {
-                                     BGroup->button(i+1)->setGeometry(BGroup->button(i)->x(),BGroup->button(i)->y(),button->width(),BGroup->button(i)->height()+BGroup->button(i+1)->height());
-                                     qDebug()<<button->text();
-                                     Memory_Scene->removeItem(PointersToButtonsDrawn[i]);
-                            }
-                             else
-                            {
-                                     button->setStyleSheet(" QPushButton{ background-color:black; color:white; font-size: 17px; font-family: Arial;border-radius: 10%;} "
-                                                           "QPushButton:hover { background-color: white; border-radius:10%;border-width: 0.5px; border-style: solid; border-color: gray ;color:black;} ");
+//                                    BGroup->button(i)->setGeometry(BGroup->button(i)->x(),BGroup->button(i)->y(),button->width(),BGroup->button(i)->height()+BGroup->button(i+1)->height());
+//                                    qDebug()<<button->text();
+//                                    Temp = BGroup->button(i);
+//                                    BGroup->addButton(BGroup->button(i+1),i);
+//                                    BGroup->addButton(Temp,i+1);
+//                                    Memory_Scene->removeItem(PointersToButtonsDrawn[i+1]);
+//                                }
+//                            }else if((i == 0) && ((BGroup->button(i+1)->text() == "Hole")))
+//                            {
+//                                     BGroup->button(i+1)->setGeometry(BGroup->button(i)->x(),BGroup->button(i)->y(),button->width(),BGroup->button(i)->height()+BGroup->button(i+1)->height());
+//                                     qDebug()<<button->text();
+//                                     Memory_Scene->removeItem(PointersToButtonsDrawn[i]);
+//                            }
+//                             else
+//                            {
+//                                     button->setStyleSheet(" QPushButton{ background-color:black; color:white; font-size: 17px; font-family: Arial;border-radius: 10%;} "
+//                                                           "QPushButton:hover { background-color: white; border-radius:10%;border-width: 0.5px; border-style: solid; border-color: gray ;color:black;} ");
 
-                                     button->setText("Hole");
-                        }
-                        }
-                        }
+//                                     button->setText("Hole");
+//                        }
+//                        }
+//                        }
 
-                        }
+//                        }
                                      break;
 
                      case QMessageBox::No:

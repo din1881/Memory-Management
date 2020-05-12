@@ -148,7 +148,7 @@ void Deallocate(QVector<Segments *> &s, QVector <Holes *> &h, int index){
     for(int i=0; i<h.size();i++){
         for(int j=i; j<h.size();j++){
             if(h[i]->startingAddress == (h[j]->startingAddress+h[j]->size -1)){
-                qDebug()<<"hi"<<h[j]->startingAddress+h[j]->size-1;
+                qDebug()<<"hi"<<h[j]->startingAddress<<" "<<h[j]->size-1;
                 h[i]->size= h[i]->size+h[j]->size;
                 h.erase(h.begin()+j);
                 break;

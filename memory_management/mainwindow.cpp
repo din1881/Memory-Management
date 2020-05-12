@@ -134,6 +134,17 @@ MainWindow::MainWindow(QWidget *parent)
     restartButton->setText("Restart");
     sideButtonsScene->addWidget(restartButton);
 
+    deallocate_button = new QToolButton();
+    deallocate_button ->setStyleSheet("QToolButton{ background-color :#035aa6; border:none; }");
+    deallocate_button ->setGeometry(0,450,75,75);
+    deallocate_button ->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    deallocate_button ->setIcon(QIcon("../icons/hole.png"));
+    deallocate_button ->setIconSize(QSize(50,50));
+    deallocate_button ->setText("Deallocate");
+    sideButtonsScene->addWidget(deallocate_button );
+    connect(deallocate_button,SIGNAL(clicked()),this,SLOT(start_deallocate())) ;
+
+
 
     /***********************************************************************/
 
@@ -417,16 +428,12 @@ void MainWindow::drawSegInputs()
 
 void MainWindow::get_data()
 {
-    qDebug()<<"hereee";
     for(int i = 0; i < segNameInputs.size(); i++)
     {
         Segments *s = new Segments;
-        qDebug()<<"hereee";
         s->segmentName=(segNameInputs[i]->text());
-        qDebug()<<"hereee";
         s->size=(segSizeInputs[i]->text()).split(" ")[0].toInt();
         s->processName=("P"+QString::number(proCounter));
-        qDebug()<<"till here";
 
         segmQueue.append(s);
         qDebug()<<segmQueue[i]->size;
@@ -452,6 +459,68 @@ void MainWindow::drawProcess()
          qDebug()<<"holes address:"<<holesQueue[i]->startingAddress<<endl;
     }
 
+    for(int i=0; i<holesQueue.size();i++){
+        qDebug()<<"holes:"<<holesQueue[i]->size<<endl;
+         qDebug()<<"holes address:"<<holesQueue[i]->startingAddress<<endl;
+    }
+    if(First_Drawn == 1)
+    {
+        qDebug()<<"Condition Triggered";
+        memDrawingScene->clear();
+        PointersToButtonsDrawn.clear();
+        memDrawingView = new QGraphicsView(memDrawingScene);
+        memDrawingScene->setBackgroundBrush(Qt::white);
+        memDrawingView->setMinimumWidth(250);
+        memDrawingView->setMaximumWidth(250);
+        memDrawingView->setAlignment(Qt::AlignTop);
+        /* Need to check for scene clear */
+        //qDebug()<< "Size of BGroup : "<<BGroup->buttons().size();
+        //qDebug()<<"Size of pinters to buttons :"<<PointersToButtonsDrawn.size();
+    }
+
+    First_Drawn = 1;
+    qDebug()<<"Flag : "<<First_Drawn;
+    /*insert memory drawing here*/
+    qDebug()<<"Value of global variable in function body : "<<global_index;
+    Draw_Memory(large_segments,holesQueue,BGroup,memDrawingScene,this,PointersToButtonsDrawn,0,0,0,&global_index, &large_segments);
+    qDebug()<<"global index is" <<global_index;
+
+
+}
+
+void MainWindow::start_deallocate(){
+
+    if(global_index>=0){
+        Deallocate(large_segments,holesQueue,global_index);
+        for(int i=0; i<large_segments.size();i++){
+            qDebug()<<"Large_Segments of "<<i<<", Size : "<<large_segments[i]->size<<endl;
+
+        }
+
+        for(int i=0; i<holesQueue.size();i++){
+            qDebug()<<"holes:"<<holesQueue[i]->size<<endl;
+             qDebug()<<"holes address:"<<holesQueue[i]->startingAddress<<endl;
+        }
+
+        memDrawingScene->clear();
+        PointersToButtonsDrawn.clear();
+        memDrawingView = new QGraphicsView(memDrawingScene);
+        memDrawingScene->setBackgroundBrush(Qt::white);
+        memDrawingView->setMinimumWidth(250);
+        memDrawingView->setMaximumWidth(250);
+        memDrawingView->setAlignment(Qt::AlignTop);
+
+
+        Draw_Memory(large_segments,holesQueue,BGroup,memDrawingScene,this,PointersToButtonsDrawn,0,0,0,&global_index, &large_segments);
+    }
+
+}
+
+void MainWindow::test(){
+    for(int i=0; i<holesQueue.size();i++){
+        qDebug()<<"holes:"<<holesQueue[i]->size<<endl;
+         qDebug()<<"holes address:"<<holesQueue[i]->startingAddress<<endl;
+    }
     if(First_Drawn == 1)
     {
         qDebug()<<"Condition Triggered";
@@ -465,8 +534,8 @@ void MainWindow::drawProcess()
         memDrawingView->setMinimumWidth(250);
         Horizontal_layout->addWidget(memDrawingView);
         /* Need to check for scene clear */
-        qDebug()<< "Size of BGroup : "<<BGroup->buttons().size();
-        qDebug()<<"Size of pinters to buttons :"<<PointersToButtonsDrawn.size();
+        //qDebug()<< "Size of BGroup : "<<BGroup->buttons().size();
+        //qDebug()<<"Size of pinters to buttons :"<<PointersToButtonsDrawn.size();
     }
 
     First_Drawn = 1;
@@ -474,8 +543,10 @@ void MainWindow::drawProcess()
     /*insert memory drawing here*/
     qDebug()<<"Value of global variable in function body : "<<global_index;
     Draw_Memory(large_segments,holesQueue,BGroup,memDrawingScene,this,PointersToButtonsDrawn,0,0,0,&global_index, &large_segments);
-}
+    qDebug()<<"global index is" <<global_index;
 
+     qDebug()<<"last";
+}
 void MainWindow::get_table_name(){
     sideOptionsScene->clear();
     sideOptionsView = new QGraphicsView(sideOptionsScene);

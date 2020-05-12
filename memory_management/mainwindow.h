@@ -50,7 +50,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    int global_index;
+    int global_index=-1;
     int bestflag=0;
     int firstflag=0;
     int First_Drawn = 0;
@@ -117,6 +117,9 @@ public:
     QCheckBox *firstFitBox;
     QLabel *bestFitLabel;
     QLabel * firstFitLabel;
+    QToolButton *deallocate_button;
+    void test();
+
 
 
 
@@ -136,6 +139,7 @@ public slots:
     void addSegmentsLayout();
     void drawSegInputs();
     void get_data();
+    void start_deallocate();
 
 
 };
