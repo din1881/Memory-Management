@@ -560,9 +560,9 @@ void MainWindow::show_seg_table(){
 
     QString get_process_name = processTablename->text();
     qDebug()<<get_process_name;
-
+qDebug()<<large_segments[0]->processName<<"..."<<large_segments[0]->segmentName;
     get_segment_table(table,large_segments,get_process_name);
-
+qDebug()<<table[0]->processName<<" ..."<<table[0]->segmentName;
     //check if the user entered invalid process name
     if(table.size()==0){
         QMessageBox *invalid_name = new QMessageBox;
@@ -576,8 +576,8 @@ void MainWindow::show_seg_table(){
     limitlabel = new QLabel;
     baselabel->setText("Base");
     limitlabel->setText("Limit");
-    baselabel->setGeometry(30,160,50,25);
-    limitlabel->setGeometry(110,160,50,25);
+    baselabel->setGeometry(80,160,50,25);
+    limitlabel->setGeometry(150,160,50,25);
     limitlabel->setStyleSheet("background-color :#035aa6; color:black;");
     baselabel->setStyleSheet("background-color :#035aa6; color:black;");
     sideOptionsScene->addWidget(limitlabel);
@@ -588,11 +588,12 @@ void MainWindow::show_seg_table(){
         QLabel *seg_no = new QLabel;
         address1->setText(tr(" %1").arg(table[i]->startingAddress));
         size1->setText(tr(" %1").arg(table[i]->size));
-        seg_no->setText(tr("%1").arg(i));
+        qDebug()<<table[i]->processName<<" ..."<<table[i]->segmentName;
+        seg_no->setText(table[i]->segmentName);
         seg_no->setStyleSheet("background-color :#035aa6; color:black;");
-        seg_no->setGeometry(5,200+height,20,25);
-        address1->setGeometry(30,200+height,50,25);
-        size1->setGeometry(110,200+height,50,25);
+        seg_no->setGeometry(4,200+height,50,25);
+        address1->setGeometry(80,200+height,50,25);
+        size1->setGeometry(150,200+height,50,25);
         sideOptionsScene->addWidget(seg_no);
         sideOptionsScene->addWidget(address1);
         sideOptionsScene->addWidget(size1);
