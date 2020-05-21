@@ -490,6 +490,8 @@ void MainWindow::drawProcess()
     qDebug()<<"Flag : "<<First_Drawn;
     /*insert memory drawing here*/
     qDebug()<<"Value of global variable in function body : "<<global_index;
+    BGroup->deleteLater();
+    BGroup= new QButtonGroup();
     Draw_Memory(large_segments,holesQueue,BGroup,memDrawingScene,this,PointersToButtonsDrawn,0,0,0,&global_index, &large_segments);
     qDebug()<<"global index is" <<global_index;
 
