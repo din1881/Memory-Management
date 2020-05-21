@@ -228,6 +228,7 @@ void Draw_Memory(QVector<Segments *> &segments,QVector <Holes *> &holes,QButtonG
             int ret =QMessageBox::critical(Mainn,"Memory Modification Requested","Are you sure you want to de-allocate this segment ?",QMessageBox::Yes | QMessageBox::No,QMessageBox::Yes);
             switch (ret) {
             case QMessageBox::Yes:
+                qDebug()<<"entered yes";
                 /* For loop to get the index of the button pressed if it is a segment */
                 if(segments_loop->size()!= 0)
                 {

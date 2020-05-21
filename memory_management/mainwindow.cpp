@@ -133,6 +133,7 @@ MainWindow::MainWindow(QWidget *parent)
     restartButton->setIconSize(QSize(50,50));
     restartButton->setText("Restart");
     sideButtonsScene->addWidget(restartButton);
+    connect(restartButton,SIGNAL(clicked()),this,SLOT(restart())) ;
 
     deallocate_button = new QToolButton();
     deallocate_button ->setStyleSheet("QToolButton{ background-color :#035aa6; border:none; }");
@@ -668,3 +669,8 @@ void MainWindow::show_seg_table(){
 
 }
 
+void MainWindow::restart(){
+    qApp->quit();
+    QProcess::startDetached(qApp->arguments()[0],qApp->arguments());
+
+}

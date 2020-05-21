@@ -21,6 +21,7 @@
 #include <QPushButton>
 #include <QGraphicsProxyWidget>
 #include <QCheckBox>
+#include <QProcess>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -140,6 +141,7 @@ public slots:
     void drawSegInputs();
     void get_data();
     void start_deallocate();
+    void restart();
 
 
 };
