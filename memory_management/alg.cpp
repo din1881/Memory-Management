@@ -1,5 +1,18 @@
 #include "alg.h"
 
+void sort_Holes_Size(QVector <Holes *> &h){
+    for (int i = 0; i < h.size(); i++) {
+            for (int j = 0; j < h.size(); j++) {
+                if (h[i]->size < h[j]->size) {
+                    Holes* temp = h[j];
+                    h[j] = h[i];
+                    h[i] = temp;
+                }
+            }
+
+        }
+}
+
 void Best_fit(QVector<Segments *> &s, QVector<Segments *> &large_Seg,QVector <Holes *> &h){
 qDebug()<<"best fit";
     //sorting holes according to address
@@ -46,8 +59,10 @@ qDebug()<<"best fit";
 
         }
 
+    //Best fit alg
     for (int i = 0; i < s.size(); i++) {
             for (int j = 0; j < h.size(); j++) {
+                sort_Holes_Size(h);
                 if ((s[i]->size <= h[j]->size) &&s[i]->segmentName != "Reserved") {
                     s[i]->startingAddress=h[j]->startingAddress;
                     //to fill the large vector of segments of all processes to be drawn
@@ -145,7 +160,6 @@ void First_fit(QVector<Segments *> &s, QVector<Segments *> &large_Seg,QVector <H
 
 void Deallocate(QVector<Segments *> &s, QVector <Holes *> &h, int index){
     qDebug()<<"Deallocate Triggered";
-    int found_flag =0;
 
     //sorting according to address
     for (int i = 0; i < s.size(); i++)
@@ -173,6 +187,7 @@ void Deallocate(QVector<Segments *> &s, QVector <Holes *> &h, int index){
             new_hole->size= s[i]->size;
             qDebug()<<" is it>"<<s[index]->segmentName<<index;
             s.erase(s.begin()+i);
+            i--;
             h.append(new_hole);
             qDebug()<<"holes size after appending"<<h.size();
         }
