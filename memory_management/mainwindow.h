@@ -118,10 +118,9 @@ public:
     QCheckBox *firstFitBox;
     QLabel *bestFitLabel;
     QLabel * firstFitLabel;
+    QLabel *baselabel;
+    QLabel *limitlabel;
     QToolButton *deallocate_button;
-    void test();
-
-
 
 
     ~MainWindow();

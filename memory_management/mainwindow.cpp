@@ -8,57 +8,7 @@ MainWindow::MainWindow(QWidget *parent)
     //, ui(new Ui::MainWindow)
 {
     //ui->setupUi(this);
-    /******************** Creating Testcases ***************************/
     BGroup = new QButtonGroup();
-//    for(int i = 0 ; i <5 ;i ++)
-//    {
-//        Segments * Segment_Temp = new Segments();
-//        Segment_Temp->segmentName = "Segment"+QString::number(i);
-//        segments.append(Segment_Temp);
-//    }
-//    segments[0]->size = 1000;
-//    segments[0]->startingAddress = 1400;
-//    segments[1]->size = 400;
-//    segments[1]->startingAddress = 6300;
-//    segments[2]->startingAddress = 4300;
-//    segments[2]->size = 400;
-//    segments[3]->size = 1100;
-//    segments[3]->startingAddress = 3200;
-//    segments[4]->size = 1000;
-//    segments[4]->startingAddress = 4700;
-    for(int i = 0;i <3;i++)
-    {
-        Holes *Hole_Temp = new Holes();
-        holes.append(Hole_Temp);
-    }
-
-    holes[0]->startingAddress = 1000;
-    holes[0]->size = 500;
-    holes[1]->startingAddress = 2000;
-    holes[1]->size = 200;
-
-
-    /******************** Creating Testcase ***************************/
-    //Segments* Temp_Segment= new Segments;
-    //Segments* Temp_Segment1= new Segments;
-    //Temp_Segment->size=700;
-    //Temp_Segment1->size=300;
-    //Temp_Segment1->segmentName="p1";
-    //Temp_Segment->segmentName="p1";
-    //segmQueue.append(Temp_Segment);
-    //segmQueue.append(Temp_Segment1);
-    //Holes* Temp_Hole = new Holes;
-    //Temp_Hole->startingAddress = 0;
-    //Temp_Hole->size = 500;
-    //holeQueue.append(Temp_Hole);
-    //Holes* Temp_Hole1 = new Holes;
-    //Temp_Hole1->startingAddress = 2400;
-    //Temp_Hole1->size = 1000;
-    //holeQueue.append(Temp_Hole1);
-    //Holes* Temp_Hole2 = new Holes;
-    //Temp_Hole2->startingAddress = 5700;
-    //Temp_Hole2->size = 1400;
-    //holeQueue.append(Temp_Hole2);
 
 
     /**************GUI Design*******************/
@@ -568,43 +518,14 @@ void MainWindow::start_deallocate(){
         memDrawingView->setMaximumWidth(250);
         memDrawingView->setAlignment(Qt::AlignTop);
 
-
+        BGroup->deleteLater();
+        BGroup= new QButtonGroup();
         Draw_Memory(large_segments,holesQueue,BGroup,memDrawingScene,this,PointersToButtonsDrawn,0,0,0,&global_index, &large_segments);
     }
 
 }
 
-void MainWindow::test(){
-    for(int i=0; i<holesQueue.size();i++){
-        qDebug()<<"holes:"<<holesQueue[i]->size<<endl;
-         qDebug()<<"holes address:"<<holesQueue[i]->startingAddress<<endl;
-    }
-    if(First_Drawn == 1)
-    {
-        qDebug()<<"Condition Triggered";
-        Horizontal_layout->removeWidget(memDrawingView);
-        memDrawingScene->clear();
-        PointersToButtonsDrawn.clear();
-        memDrawingScene = new QGraphicsScene();
 
-        memDrawingView = new QGraphicsView(memDrawingScene);
-        memDrawingScene->setBackgroundBrush(Qt::white);
-        memDrawingView->setMinimumWidth(250);
-        Horizontal_layout->addWidget(memDrawingView);
-        /* Need to check for scene clear */
-        //qDebug()<< "Size of BGroup : "<<BGroup->buttons().size();
-        //qDebug()<<"Size of pinters to buttons :"<<PointersToButtonsDrawn.size();
-    }
-
-    First_Drawn = 1;
-    qDebug()<<"Flag : "<<First_Drawn;
-    /*insert memory drawing here*/
-    qDebug()<<"Value of global variable in function body : "<<global_index;
-    Draw_Memory(large_segments,holesQueue,BGroup,memDrawingScene,this,PointersToButtonsDrawn,0,0,0,&global_index, &large_segments);
-    qDebug()<<"global index is" <<global_index;
-
-     qDebug()<<"last";
-}
 void MainWindow::get_table_name(){
     sideOptionsScene->clear();
     sideOptionsView = new QGraphicsView(sideOptionsScene);
@@ -645,9 +566,20 @@ void MainWindow::show_seg_table(){
         QMessageBox *invalid_name = new QMessageBox;
         invalid_name->setText("No process found with this name");
         invalid_name->exec();
+        return;
     }
 
     int height=0;
+    baselabel = new QLabel;
+    limitlabel = new QLabel;
+    baselabel->setText("Base");
+    limitlabel->setText("Limit");
+    baselabel->setGeometry(30,160,50,25);
+    limitlabel->setGeometry(110,160,50,25);
+    limitlabel->setStyleSheet("background-color :#035aa6; color:black;");
+    baselabel->setStyleSheet("background-color :#035aa6; color:black;");
+    sideOptionsScene->addWidget(limitlabel);
+    sideOptionsScene->addWidget(baselabel);
     for(int i=0;i<table.size();i++){
         QLabel *address1 = new QLabel;
         QLabel *size1 = new QLabel;
@@ -656,9 +588,9 @@ void MainWindow::show_seg_table(){
         size1->setText(tr(" %1").arg(table[i]->size));
         seg_no->setText(tr("%1").arg(i));
         seg_no->setStyleSheet("background-color :#035aa6; color:black;");
-        seg_no->setGeometry(5,160+height,20,25);
-        address1->setGeometry(30,160+height,50,25);
-        size1->setGeometry(110,160+height,50,25);
+        seg_no->setGeometry(5,200+height,20,25);
+        address1->setGeometry(30,200+height,50,25);
+        size1->setGeometry(110,200+height,50,25);
         sideOptionsScene->addWidget(seg_no);
         sideOptionsScene->addWidget(address1);
         sideOptionsScene->addWidget(size1);
