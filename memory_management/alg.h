@@ -7,4 +7,5 @@ void First_fit(QVector<Segments *> &s, QVector<Segments *> &large_Seg,QVector <H
 void Deallocate(QVector<Segments *> &s, QVector <Holes *> &h, int index);
 void get_segment_table (QVector<Segments *> &table,QVector<Segments *> &large_seg, QString name);
 void sort_Holes_Size(QVector <Holes *> &h);
+void compact(QVector <Holes *> &h);
 #endif // ALG_H
