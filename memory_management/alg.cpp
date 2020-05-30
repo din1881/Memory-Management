@@ -140,7 +140,7 @@ void First_fit(QVector<Segments *> &s, QVector<Segments *> &large_Seg,QVector <H
                 {
                     s[i]->startingAddress=h[j]->startingAddress;
                     //to fill the large vector of segments of all processes to be drawn
-                    large_Seg.push_back(s[i]);
+                    test_s.push_back(s[i]);
                     allocated_flag++;
                     //decrease the size of the hole
                     h[j]->size=h[j]->size-s[i]->size;

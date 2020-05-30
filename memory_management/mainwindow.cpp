@@ -553,16 +553,17 @@ void MainWindow::get_table_name(){
     tableInputButton->setIcon(QIcon(path +"check.png"));
     tableInputButton->setIconSize(QSize(50,50));
     sideOptionsScene->addWidget(tableInputButton);
+    qDebug()<<"table1";
     connect(tableInputButton,SIGNAL(clicked()),this,SLOT(show_seg_table())) ;
 }
 
 void MainWindow::show_seg_table(){
-
+qDebug()<<"table2";
     QString get_process_name = processTablename->text();
     qDebug()<<get_process_name;
-qDebug()<<large_segments[0]->processName<<"..."<<large_segments[0]->segmentName;
+//qDebug()<<large_segments[0]->processName<<"..."<<large_segments[0]->segmentName;
     get_segment_table(table,large_segments,get_process_name);
-qDebug()<<table[0]->processName<<" ..."<<table[0]->segmentName;
+//qDebug()<<table[0]->processName<<" ..."<<table[0]->segmentName;
     //check if the user entered invalid process name
     if(table.size()==0){
         QMessageBox *invalid_name = new QMessageBox;
