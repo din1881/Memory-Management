@@ -174,23 +174,7 @@ void MainWindow::lineEdits()
     noHoles->setStyleSheet("background-color:white;");
     sideOptionsScene->addWidget(noHoles);
 
-    bestFitBox = new QCheckBox();
-    bestFitBox->setStyleSheet("background-color :#035aa6; color:black; font-size: 15px; font-family: Arial;");
-    bestFitBox->setGeometry(15,190,18,18);
-    bestFitLabel = new QLabel("Best Fit");
-    bestFitLabel->setStyleSheet("background-color :#035aa6; color:black; font-size: 15px; font-family: Arial;");
-    bestFitLabel->setGeometry(35,190,80,18);
-    sideOptionsScene->addWidget(bestFitBox);
-    sideOptionsScene->addWidget(bestFitLabel);
 
-    firstFitBox = new QCheckBox();
-    firstFitBox->setStyleSheet("background-color :#035aa6; color:black; font-size: 15px; font-family: Arial;");
-    firstFitBox->setGeometry(95,190,18,18);
-    firstFitLabel= new QLabel("First Fit");
-    firstFitLabel->setStyleSheet("background-color :#035aa6; color:black; font-size: 15px; font-family: Arial;");
-    firstFitLabel->setGeometry(110,190,80,18);
-    sideOptionsScene->addWidget(firstFitBox);
-    sideOptionsScene->addWidget(firstFitLabel);
 
     addHolesNo = new QToolButton();
     addHolesNo->setStyleSheet("QToolButton{ background-color : #035aa6; border:none;}");
@@ -206,8 +190,7 @@ void MainWindow::lineEdits()
 
 void MainWindow::memSizeAndAdd()
 {
-    if(bestFitBox->isChecked()) bestflag=1;
-    else if(firstFitBox->isChecked()) firstflag=1;
+
     memSize= memorySize->text();
     holes_num = noHoles->text();
     //qDebug()<<"hey1: "<<holes_num;
@@ -377,6 +360,24 @@ void MainWindow::addSegmentsLayout()
     pLineEdit->setStyleSheet("background-color:white;");
     sideOptionsScene->addWidget(pLineEdit);
 
+    bestFitBox = new QCheckBox();
+    bestFitBox->setStyleSheet("background-color :#035aa6; color:black; font-size: 15px; font-family: Arial;");
+    bestFitBox->setGeometry(15,100,18,18);
+    bestFitLabel = new QLabel("Best Fit");
+    bestFitLabel->setStyleSheet("background-color :#035aa6; color:black; font-size: 15px; font-family: Arial;");
+    bestFitLabel->setGeometry(35,100,80,18);
+    sideOptionsScene->addWidget(bestFitBox);
+    sideOptionsScene->addWidget(bestFitLabel);
+
+    firstFitBox = new QCheckBox();
+    firstFitBox->setStyleSheet("background-color :#035aa6; color:black; font-size: 15px; font-family: Arial;");
+    firstFitBox->setGeometry(95,100,18,18);
+    firstFitLabel= new QLabel("First Fit");
+    firstFitLabel->setStyleSheet("background-color :#035aa6; color:black; font-size: 15px; font-family: Arial;");
+    firstFitLabel->setGeometry(110,100,80,18);
+    sideOptionsScene->addWidget(firstFitBox);
+    sideOptionsScene->addWidget(firstFitLabel);
+
 
     segInput = new QToolButton();
     segInput->setStyleSheet("QToolButton{ background-color : #035aa6; border:none;}");
@@ -392,6 +393,8 @@ void MainWindow::addSegmentsLayout()
 void MainWindow::drawSegInputs()
 {
 
+    if(bestFitBox->isChecked()) bestflag=1;
+    else if(firstFitBox->isChecked()) firstflag=1;
     segNameLabel = new QLabel("Seg Name");
     segNameLabel ->setGeometry(5,205,120,30);
     segNameLabel ->setStyleSheet("background-color : #035aa6; color:black; font-size: 15px; font-family: Arial;");
