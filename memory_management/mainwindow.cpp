@@ -457,7 +457,7 @@ void MainWindow::get_data()
 
 void MainWindow::drawProcess()
 {
-
+ compact(holesQueue);
 
     if(bestflag) {Best_fit(segmQueue,large_segments,holesQueue); }
     else if(firstflag) {First_fit(segmQueue,large_segments,holesQueue);}
