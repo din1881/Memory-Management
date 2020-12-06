@@ -5,7 +5,7 @@ This project focuses on implementing memory allocation and deallocation algorith
 Our GUI is user friendly and self explanatory.
 
 ## Dependencies for using the simulator: <br>
--Windows OS (different steps could be required in any other OS)
+-Windows OS (different steps could be required in any other OS) <br>
 -Qt
 
 ## Running the program:
