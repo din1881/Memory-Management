@@ -2,7 +2,8 @@
 
 This is a memory management simulator (education friendly tool), this is a part of our coursework in the Operating Systems Course. <br>
 This project focuses on implementing memory allocation and deallocation algorithms and simulating it using C++ and Qt. <br>
-Our GUI is user friendly and self explanatory.
+<br>
+Our GUI is user friendly and self explanatory :metal:.
 
 ## Dependencies for using the simulator: <br>
 - [ ] Windows OS (different steps could be required in any other OS) <br>
